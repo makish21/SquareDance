@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{25211C2C-FE43-4C08-862E-9DAEDC4026E8}</ProjectGuid>
     <RootNamespace>lollalrear</RootNamespace>
-    <ProjectName>TheGame</ProjectName>
+    <ProjectName>SquareDance</ProjectName>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
