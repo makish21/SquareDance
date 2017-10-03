@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{244e9e3e-bd96-4f71-a5a4-aa5ca5d5c0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GUI">
+      <UniqueIdentifier>{5cde3c72-7268-42b2-9a53-9a2c52bbc491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States">
+      <UniqueIdentifier>{c132be19-e5e3-497c-a2ee-cbf457f8a64b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Engine">
+      <UniqueIdentifier>{c619335d-596f-4812-b662-492983527921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Engine\Spawner">
+      <UniqueIdentifier>{9519b01b-7797-4385-b776-e95fd3de54be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Engine\Input">
+      <UniqueIdentifier>{7ba210d5-2c9a-4fb6-8422-82f32bf35e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Engine\Objects">
+      <UniqueIdentifier>{210acb12-6aa0-4497-9dae-4747a1bab168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Transitions">
+      <UniqueIdentifier>{30b14b2b-2a09-4228-952c-b54ea0d5f39d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Game\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsBar.cpp">
+      <Filter>Game\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RoundedRectangleShape.cpp">
+      <Filter>Game\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameProcessState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="StatisticsState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultEnemy.cpp">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Collidable.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Game\Engine\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="InputHandler.cpp">
+      <Filter>Game\Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnPresets.cpp">
+      <Filter>Game\Engine\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ToMenuTransition.cpp">
+      <Filter>Game\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="ToGameTransition.cpp">
+      <Filter>Game\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="Transition.cpp">
+      <Filter>Game\Transitions</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Button.h">
+      <Filter>Game\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsBar.h">
+      <Filter>Game\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RoundedRectangleShape.h">
+      <Filter>Game\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameProcessState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StatisticsState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultEnemy.h">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.hpp">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Collidable.hpp">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>Game\Engine\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnPresets.h">
+      <Filter>Game\Engine\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands.hpp">
+      <Filter>Game\Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllable.hpp">
+      <Filter>Game\Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputHandler.h">
+      <Filter>Game\Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="ToMenuTransition.h">
+      <Filter>Game\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="ToGameTransition.h">
+      <Filter>Game\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>Game\Transitions</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
