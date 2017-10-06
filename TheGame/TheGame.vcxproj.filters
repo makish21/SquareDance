@@ -54,9 +54,6 @@
     <ClCompile Include="GameProcessState.cpp">
       <Filter>Game\States</Filter>
     </ClCompile>
-    <ClCompile Include="StatisticsState.cpp">
-      <Filter>Game\States</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultEnemy.cpp">
       <Filter>Game\Engine\Objects</Filter>
     </ClCompile>
@@ -96,6 +93,12 @@
     <ClCompile Include="Transition.cpp">
       <Filter>Game\Transitions</Filter>
     </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -111,9 +114,6 @@
       <Filter>Game\States</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
-      <Filter>Game\States</Filter>
-    </ClInclude>
-    <ClInclude Include="StatisticsState.h">
       <Filter>Game\States</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
@@ -164,5 +164,47 @@
     <ClInclude Include="Transition.h">
       <Filter>Game\Transitions</Filter>
     </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Definitions.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SpawnPresets.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RadialGradient.frag">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="Courtesy.ogg">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="Otis.ogg">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="Space.ogg">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="RadialGradient.vert">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="HelveticaNeueCyr.otf">
+      <Filter>Файлы ресурсов</Filter>
+    </Font>
+    <Font Include="FuturicaBs.ttf">
+      <Filter>Файлы ресурсов</Filter>
+    </Font>
+    <Font Include="GameButtons.ttf">
+      <Filter>Файлы ресурсов</Filter>
+    </Font>
   </ItemGroup>
 </Project>

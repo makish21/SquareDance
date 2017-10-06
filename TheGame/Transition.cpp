@@ -1,6 +1,5 @@
 #include "Transition.h"
-
-#define PI 3.14159265358979f
+#include "Definitions.hpp"
 
 Transition::Transition(Game* game,
 					   float transitionTime,
@@ -33,4 +32,11 @@ void Transition::calculateTransition(float elapsed)
 	m_game->getPlayer()->setPosition((c_oldPlayerPosition - c_newPlayerPosition) * factor + c_newPlayerPosition);
 	m_game->getWorld()->setAlpha(static_cast<sf::Uint8>((c_oldWorldAlpha - c_newWorldAlpha) * factor + c_newWorldAlpha));
 	m_game->setTitleAlpha(static_cast<sf::Uint8>((c_oldTitleAlpha - c_newTitleAlpha) * factor + c_newTitleAlpha));
+}
+
+float Transition::translate(float elapsed, float oldVal, float newVal)
+{
+	float factor = 1.f - std::sin(elapsed / m_transitionTime * PI / 2.f);
+
+	return (oldVal - newVal) * factor + newVal;
 }

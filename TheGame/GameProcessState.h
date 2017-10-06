@@ -11,7 +11,14 @@
 #include "DefaultEnemy.h"
 #include "InputHandler.h"
 #include "EnemySpawner.h"
+#include "ParticleSystem.h"
 
+enum State
+{
+	Begin,
+	Process,
+	Revival
+};
 
 class GameProcessState :
 	public GameState
@@ -26,17 +33,27 @@ public:
 
 private:
 	const float VIEW_ZOOM = 1.f;
-	const sf::Vector2f PLAYER_POSITION = sf::Vector2f(400.f, 240.f);
+	const sf::Vector2f PLAYER_POSITION = sf::Vector2f(400.f, 140.f);
 	const sf::Uint8 WORLD_TRANSPARENCY = 10;
+
+	void begin(float time);
+	void process(float time);
+	void revival(float time);
+
+	State m_state;
+	ParticleSystem m_particleSystem;
+
+	std::string getElapsedString(sf::Int32 milliseconds);
 
 	sf::Sound m_sound;
 
 	std::list<Object*> m_objects;
 
-	SpawnPresets m_spawnPresets;
 	EnemySpawner m_enemySpawner;
 
 	InputHandler m_inputHandler;
+
+	sf::Text m_stopwatchText;
 
 	sf::Clock m_sessionClock;
 	sf::Time m_sessionTime;

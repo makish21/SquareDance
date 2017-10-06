@@ -1,10 +1,6 @@
 #include "Game.h"
 #include "GameState.h"
-
-#define CHARACTER_SIZE_FACTOR 0.1270833333f
-#define TITLE_Y_POSITION_FACTOR 0.33125f
-#define DEFAULT_VIEW_WITDH 800.f
-#define VIEW_CENTER sf::Vector2f(400, 240)
+#include "Definitions.hpp"
 
 Game::Game() :
 #ifdef __ANDROID__
@@ -12,51 +8,51 @@ Game::Game() :
 	m_settings(0, 0, 0),
 	m_window(m_videoMode, "Game", sf::Style::Default, m_settings),
 #else
-	m_videoMode(sf::VideoMode::getFullscreenModes()[6]),
+	m_videoMode(sf::VideoMode::getFullscreenModes()[0]),
 	m_settings(0, 0, 4),
 	m_window(m_videoMode, "Game", sf::Style::Resize, m_settings),
 #endif
 	m_viewZoom(8.f),
-	m_aspectRatio(float(m_videoMode.width) / float(m_videoMode.height)),
-	m_defaultViewSize(DEFAULT_VIEW_WITDH, DEFAULT_VIEW_WITDH / m_aspectRatio),
-	m_view(VIEW_CENTER, m_defaultViewSize * m_viewZoom),
-	m_world(sf::FloatRect(0.f, (480.f - static_cast<float>(m_videoMode.height)) / 2,
-						  DEFAULT_VIEW_WITDH,
-						  static_cast<float>(m_videoMode.height))),
+	m_world(this),
 	m_player(VIEW_CENTER.x, VIEW_CENTER.y, 20, 20),
 	m_titleColor(242, 227, 160, 0)
 {
 #ifdef _DEBUG
-	m_window.setFramerateLimit(120);
+	//m_window.setFramerateLimit(120);
 #endif // DEBUG
+	m_window.setKeyRepeatEnabled(false);
 
-	m_world.setWindowHeight(m_videoMode.height);
+	m_fileManager.loadFont("Buttons", "GameButtons.ttf");
+	m_fileManager.loadFont("Helvetica", "HelveticaNeueCyr.otf");
+	m_fileManager.loadFont("Futurica", "FuturicaBs.ttf");
 
-	m_fonts.emplace("Buttons", new sf::Font);
-	m_fonts.emplace("Helvetica", new sf::Font);
-	m_fonts.emplace("Futurica", new sf::Font);
+	m_fileManager.loadSound("Space", "");
+	m_fileManager.loadSound("Courtesy", "");
+	m_fileManager.loadSound("Otis", "Courtesy.ogg");
 
-	m_fonts.at("Buttons")->loadFromFile("GameButtons.ttf");
-	m_fonts.at("Helvetica")->loadFromFile("HelveticaNeueCyr.otf");
-	m_fonts.at("Futurica")->loadFromFile("FuturicaBs.ttf");
+	m_fileManager.loadSpawnPresets("SpawnPresets.txt");
 
-	m_title.setFont(*getFont("Helvetica"));
+	if (sf::Shader::isAvailable())
+	{
+		m_fileManager.loadShader("WhiteRadialGradient", "RadialGradient.frag", "RadialGradient.vert");
+
+		m_world.setShader(m_fileManager.getShader("WhiteRadialGradient"));
+	}
+
+	updateRender(m_videoMode);
+
+	m_title.setFont(*m_fileManager.getFont("Helvetica"));
 	m_title.setString(GAME_NAME);
 	m_title.setCharacterSize(static_cast<unsigned int>(CHARACTER_SIZE_FACTOR * m_videoMode.height));
 	m_title.setOrigin(m_title.getLocalBounds().width / 2, m_title.getGlobalBounds().height / 2);
 	m_title.setPosition(static_cast<float>(m_videoMode.width) / 2,
-						TITLE_Y_POSITION_FACTOR * 
+						TITLE_Y_POSITION_FACTOR *
 						static_cast<float>(m_videoMode.height));
 	m_title.setFillColor(m_titleColor);
 
-	sf::SoundBuffer buffer;
-
-	m_soundBuffers.emplace("Space", new sf::SoundBuffer(buffer));
-	m_soundBuffers.emplace("Courtesy", new sf::SoundBuffer(buffer));
-	m_soundBuffers.emplace("Otis", new sf::SoundBuffer(buffer));
 
 #if defined(_DEBUG) || defined(__ANDROID__)
-	m_debugText.setFont(*getFont("Futurica"));
+	m_debugText.setFont(*m_fileManager.getFont("Futurica"));
 	m_debugText.setCharacterSize(15);
 	m_debugText.setPosition(10.f, 10.f);
 	m_debugText.setFillColor(sf::Color::White);
@@ -70,23 +66,9 @@ Game::Game() :
 Game::~Game()
 {
 	clearStates();
-
-	for (auto i = m_fonts.begin(); i != m_fonts.end(); i++)
-	{
-		delete i->second;
-		i->second = nullptr;
-	}
-	m_fonts.clear();
-
-	for (auto i = m_soundBuffers.begin(); i != m_soundBuffers.end(); i++)
-	{
-		delete i->second;
-		i->second = nullptr;
-	}
-	m_soundBuffers.clear();
 }
 
-sf::Window * Game::getWindow()
+sf::RenderTarget * Game::getWindow()
 {
 	return &m_window;
 }
@@ -113,19 +95,14 @@ void Game::setViewZoom(float newZoom)
 	m_view.setSize(m_defaultViewSize * newZoom);
 }
 
+FileManager * Game::getFileManager()
+{
+	return &m_fileManager;
+}
+
 World * Game::getWorld()
 {
 	return &m_world;
-}
-
-sf::Font * Game::getFont(const std::string& name) const
-{
-	return m_fonts.at(name);
-}
-
-sf::SoundBuffer * Game::getSoundBuffer(const std::string & name) const
-{
-	return m_soundBuffers.at(name);
 }
 
 Player * Game::getPlayer()
@@ -148,6 +125,11 @@ void Game::setTitleAlpha(sf::Uint8 newAlpha)
 sf::Vector2i Game::getPixelMousePosition() const
 {
 	return m_mousePosition;
+}
+
+sf::Vector2i Game::getPixelMousePosition(const sf::View & view) const
+{
+	return m_window.mapCoordsToPixel(sf::Vector2f(m_mousePosition), view);
 }
 
 sf::Vector2f Game::getWorldMousePosition() const
@@ -191,6 +173,11 @@ GameState* Game::peekState()
 	return m_states.top();
 }
 
+bool Game::pollEvent(sf::Event & event)
+{
+	return m_window.pollEvent(event);
+}
+
 void Game::handleEvent(sf::Event & event)
 {
 	switch (event.type)
@@ -200,11 +187,7 @@ void Game::handleEvent(sf::Event & event)
 		return;
 
 	case sf::Event::Resized:
-		m_videoMode = sf::VideoMode(event.size.width, event.size.height);
-		m_aspectRatio = float(event.size.width) / float(event.size.height);
-		m_defaultViewSize = sf::Vector2f(DEFAULT_VIEW_WITDH, DEFAULT_VIEW_WITDH / m_aspectRatio);
-		m_view.setSize(m_defaultViewSize * m_viewZoom);
-		m_world.setWindowHeight(event.size.height);
+		updateRender(event.size.width, event.size.height);
 		break;
 
 	default:
@@ -250,6 +233,25 @@ void Game::clearStates()
 	}
 }
 
+void Game::updateRender(sf::VideoMode videoMode)
+{
+	updateRender(videoMode.width, videoMode.height, videoMode.bitsPerPixel);
+}
+
+void Game::updateRender(unsigned int width, unsigned int height, unsigned int bitsPerPixel)
+{
+	m_videoMode = sf::VideoMode(width, height, bitsPerPixel);
+	m_aspectRatio = float(width) / float(height);
+	m_defaultViewSize = sf::Vector2f(WORLD_SIZE.x, WORLD_SIZE.x / m_aspectRatio);
+	m_view.setSize(m_defaultViewSize * m_viewZoom);
+	m_view.setCenter(VIEW_CENTER);
+
+	m_world.updateBounds(sf::FloatRect(VIEW_CENTER.x - m_defaultViewSize.x / 2,
+									   VIEW_CENTER.y - m_defaultViewSize.y / 2,
+									   m_defaultViewSize.x,
+									   m_defaultViewSize.y));
+}
+
 void Game::handleInput()
 {
 #ifdef __ANDROID__
@@ -270,9 +272,7 @@ void Game::update()
 
 	while (m_elapsed.asSeconds() >= frameTime)
 	{
-		m_world.setPlayerPosition(sf::Vector2f(m_player.getPosition().x,
-											   m_player.getPosition().y - 
-											   (480.f - static_cast<float>(m_videoMode.height)) / 2));
+		m_world.update(1.4f);
 		peekState()->update(1.4f);
 		m_elapsed -= sf::seconds(frameTime);
 
@@ -292,7 +292,6 @@ void Game::update()
 
 	m_dMousePosition = "Mouse position: x: " + std::to_string(getWorldMousePosition(m_view).x) +
 		" y: " + std::to_string(getWorldMousePosition(m_view).y) + '\n';
-	//m_dWorldTransparency = "World transparency: " + std::to_string(m_world.getAlpha()) + '\n';
 
 	if (m_titleClock.getElapsedTime().asSeconds() >= 1)
 	{

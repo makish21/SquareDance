@@ -15,6 +15,8 @@ public:
 protected:
 	void calculateTransition(float elapsed);
 
+	float translate(float elapsed, float oldVal, float newVal);
+
 	sf::Clock m_transitionClock;
 	float m_transitionTime;
 

@@ -2,13 +2,6 @@
 #include <SFML\Graphics.hpp>
 #include "Game.h"
 
-enum TransitionState
-{
-	OnEnter,
-	OnProcess,
-	OnExit
-};
-
 class GameState
 {
 public:

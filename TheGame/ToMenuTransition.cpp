@@ -1,7 +1,7 @@
 #include "ToMenuTransition.h"
 
 #define VIEW_ZOOM 0.5f
-#define PLAYER_POSITION sf::Vector2f(400, 240)
+#define PLAYER_POSITION sf::Vector2f(400, 140)
 #define WORLD_ALPHA 0
 #define TITLE_ALPHA 255
 
@@ -22,7 +22,7 @@ ToMenuTransition::~ToMenuTransition()
 
 void ToMenuTransition::handleInput(sf::Event & event)
 {
-	while (m_game->getWindow()->pollEvent(event))
+	while (m_game->pollEvent(event))
 	{
 		m_game->handleEvent(event);
 

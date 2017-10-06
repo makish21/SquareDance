@@ -2,14 +2,13 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <stack>
-#include <unordered_map>
 
+#include "FileManager.h"
 #include "World.h"
 #include "Player.h"
 
-#define GAME_NAME "Square Dance"
-
 class GameState;
+class World;
 
 class Game
 {
@@ -17,7 +16,7 @@ public:
 	Game();
 	~Game();
 
-	sf::Window* getWindow();
+	sf::RenderTarget* getWindow();
 
 	sf::View* getView();
 	const sf::Vector2f& getDefaultViewSize() const;
@@ -25,17 +24,15 @@ public:
 
 	void setViewZoom(float newZoom);
 
+	FileManager* getFileManager();
 	World* getWorld();
-
-	sf::Font* getFont(const std::string& name) const;
-	sf::SoundBuffer* getSoundBuffer(const std::string& name) const;
-
 	Player* getPlayer();
 
 	sf::Uint8 getTitleAlpha() const;
 	void setTitleAlpha(sf::Uint8 newAlpha);
 
 	sf::Vector2i getPixelMousePosition() const;
+	sf::Vector2i getPixelMousePosition(const sf::View& view) const;
 	sf::Vector2f getWorldMousePosition() const;
 	sf::Vector2f getWorldMousePosition(const sf::View& view) const;
 
@@ -45,6 +42,7 @@ public:
 
 	GameState* peekState();
 
+	bool pollEvent(sf::Event& event);
 	void handleEvent(sf::Event& event);
 
 	void gameLoop();
@@ -53,6 +51,9 @@ public:
 
 private: 
 	void clearStates();
+
+	void updateRender(sf::VideoMode videoMode);
+	void updateRender(unsigned int width, unsigned int height, unsigned int bitsPerPixel = 32U);
 
 	void handleInput();
 	void update();
@@ -69,17 +70,14 @@ private:
 	float m_viewZoom;
 	sf::View m_view;
 
+	FileManager m_fileManager;
 	World m_world;
-
 	Player m_player;
 
 	sf::Color m_titleColor;
 	sf::Text m_title;
 
 	std::stack<GameState*> m_states;
-
-	std::unordered_map<std::string, sf::Font*> m_fonts;
-	std::unordered_map<std::string, sf::SoundBuffer*> m_soundBuffers;
 
 	sf::Event m_event;
 

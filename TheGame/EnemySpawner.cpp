@@ -15,7 +15,7 @@ EnemySpawner::EnemySpawner(std::list<Object*>* container,
 	m_spawnPresets(presets),
 	m_distribution(0, presets->getSize() - 1),
 	m_randomGenerator(m_randomDevice()),
-	m_breakTime(4.f)
+	m_breakTime(2.f)
 {
 	m_clock.restart();
 }

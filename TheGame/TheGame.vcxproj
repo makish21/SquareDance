@@ -133,6 +133,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameProcessState.cpp" />
     <ClCompile Include="InputHandler.cpp" />
@@ -140,10 +141,10 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Git-projects\TheGame\TheGame\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RoundedRectangleShape.cpp" />
     <ClCompile Include="SpawnPresets.cpp" />
-    <ClCompile Include="StatisticsState.cpp" />
     <ClCompile Include="ToGameTransition.cpp" />
     <ClCompile Include="ToMenuTransition.cpp" />
     <ClCompile Include="Transition.cpp" />
@@ -155,23 +156,40 @@
     <ClInclude Include="ContentsBar.h" />
     <ClInclude Include="Controllable.hpp" />
     <ClInclude Include="DefaultEnemy.h" />
+    <ClInclude Include="Definitions.hpp" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="EnemySpawner.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameProcessState.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Object.hpp" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RoundedRectangleShape.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="SpawnPresets.h" />
-    <ClInclude Include="StatisticsState.h" />
     <ClInclude Include="ToGameTransition.h" />
     <ClInclude Include="ToMenuTransition.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="SpawnPresets.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Courtesy.ogg" />
+    <None Include="Otis.ogg" />
+    <None Include="RadialGradient.frag" />
+    <None Include="RadialGradient.vert" />
+    <None Include="Space.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="FuturicaBs.ttf" />
+    <Font Include="GameButtons.ttf" />
+    <Font Include="HelveticaNeueCyr.otf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

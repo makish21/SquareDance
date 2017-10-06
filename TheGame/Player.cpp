@@ -55,6 +55,11 @@ sf::FloatRect Player::getRect() const
 	return sf::FloatRect(minX, minY, maxX - minX, maxY - minY);
 }
 
+sf::Vector2f Player::getVelocity() const
+{
+	return m_velocity;
+}
+
 void Player::left()
 {
 	m_velocity.x = -2;
@@ -74,7 +79,7 @@ void Player::update(World& world, float time)
 
 	updateCollision();
 
-	m_velocity.x = 0;
+	//m_velocity.x = 0;
 
 	if (!m_life)
 	{

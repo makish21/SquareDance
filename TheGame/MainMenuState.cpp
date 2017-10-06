@@ -5,7 +5,7 @@ MainMenuState::MainMenuState(Game* game) :
 	GameState(game),
 	m_playButton(game->getPlayer()->getRect())
 {
-	m_sound.setBuffer(*game->getSoundBuffer("Space"));
+	m_sound.setBuffer(*game->getFileManager()->getSound("Space"));
 	m_sound.setLoop(true);
 	m_sound.play();
 
@@ -45,7 +45,7 @@ void MainMenuState::update(float time)
 
 void MainMenuState::handleInput(sf::Event& event)
 {
-	while (m_game->getWindow()->pollEvent(event))
+	while (m_game->pollEvent(event))
 	{
 		m_game->handleEvent(event);
 

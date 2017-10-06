@@ -17,6 +17,8 @@ public:
 
 	sf::FloatRect getRect() const;
 
+	sf::Vector2f getVelocity() const;
+
 	virtual void left();
 	virtual void right();
 
