@@ -35,12 +35,12 @@ DefaultEnemy::DefaultEnemy(float y, float velocityX)
 	updateCollision();
 }
 
-void DefaultEnemy::update(World& world, float time)
+void DefaultEnemy::update(World& world, sf::Time elapsed)
 {
 	checkCollisionWithWorld(world);
 
-	move(m_velocity * time);
-	rotate(m_velocity.x * time);
+	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
+	rotate(m_velocity.x * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
 
 	updateCollision();
 }

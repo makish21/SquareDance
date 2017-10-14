@@ -3,22 +3,25 @@
 #include "Definitions.hpp"
 
 Game::Game() :
+	m_bestVideoMode(sf::VideoMode::getFullscreenModes()[0]),
 #ifdef __ANDROID__
-	m_videoMode(sf::VideoMode::getFullscreenModes()[0]),
+	m_currentVideoMode(sf::VideoMode::getFullscreenModes()[0]),
 	m_settings(0, 0, 0),
-	m_window(m_videoMode, "Game", sf::Style::Default, m_settings),
+	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
+	//
 #else
-	m_videoMode(sf::VideoMode::getFullscreenModes()[0]),
+	m_currentVideoMode(sf::VideoMode::getFullscreenModes()[0]),
 	m_settings(0, 0, 4),
-	m_window(m_videoMode, "Game", sf::Style::Resize, m_settings),
+	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
 #endif
-	m_viewZoom(8.f),
+	m_background(sf::Vector2u(m_currentVideoMode.width, m_currentVideoMode.height)),
+	m_viewZoom(INITIAL_VIEW_ZOOM),
 	m_world(this),
 	m_player(VIEW_CENTER.x, VIEW_CENTER.y, 20, 20),
-	m_titleColor(242, 227, 160, 0)
+	m_titleColor(INITIAL_TITLE_COLOR)
 {
 #ifdef _DEBUG
-	//m_window.setFramerateLimit(120);
+	//m_window.setFramerateLimit(60);
 #endif // DEBUG
 	m_window.setKeyRepeatEnabled(false);
 
@@ -29,6 +32,7 @@ Game::Game() :
 	m_fileManager.loadSound("Space", "");
 	m_fileManager.loadSound("Courtesy", "");
 	m_fileManager.loadSound("Otis", "Courtesy.ogg");
+	m_fileManager.loadSound("RecordRewind", "RecordRewind.ogg");
 
 	m_fileManager.loadSpawnPresets("SpawnPresets.txt");
 
@@ -39,28 +43,24 @@ Game::Game() :
 		m_world.setShader(m_fileManager.getShader("WhiteRadialGradient"));
 	}
 
-	updateRender(m_videoMode);
+	updateRender(m_currentVideoMode);
 
 	m_title.setFont(*m_fileManager.getFont("Helvetica"));
 	m_title.setString(GAME_NAME);
-	m_title.setCharacterSize(static_cast<unsigned int>(CHARACTER_SIZE_FACTOR * m_videoMode.height));
+	m_title.setCharacterSize(static_cast<unsigned int>(CHARACTER_SIZE_FACTOR * m_bestVideoMode.height));
 	m_title.setOrigin(m_title.getLocalBounds().width / 2, m_title.getGlobalBounds().height / 2);
-	m_title.setPosition(static_cast<float>(m_videoMode.width) / 2,
+	m_title.setScale(float(m_currentVideoMode.width) / float(m_bestVideoMode.width),
+					 float(m_currentVideoMode.width) / float(m_bestVideoMode.width));
+	m_title.setPosition(static_cast<float>(m_currentVideoMode.width) / 2,
 						TITLE_Y_POSITION_FACTOR *
-						static_cast<float>(m_videoMode.height));
+						static_cast<float>(m_currentVideoMode.height));
 	m_title.setFillColor(m_titleColor);
 
-
+	m_clock.restart();
 #if defined(_DEBUG) || defined(__ANDROID__)
-	m_debugText.setFont(*m_fileManager.getFont("Futurica"));
-	m_debugText.setCharacterSize(15);
-	m_debugText.setPosition(10.f, 10.f);
-	m_debugText.setFillColor(sf::Color::White);
-
-	m_dBitsPerPixel = "Bits per pixel: " + std::to_string(m_videoMode.bitsPerPixel) + '\n';
-	m_dUpdates = "Updates: 0\n";
-	m_dFrames = "Frames: 0\n";
-#endif // _DEBUG
+	m_debugOverlay.setGame(this);
+	m_debugOverlay.setFont(m_fileManager.getFont("Futurica"));
+#endif
 }
 
 Game::~Game()
@@ -68,7 +68,7 @@ Game::~Game()
 	clearStates();
 }
 
-sf::RenderTarget * Game::getWindow()
+sf::RenderWindow * Game::getWindow()
 {
 	return &m_window;
 }
@@ -110,15 +110,14 @@ Player * Game::getPlayer()
 	return &m_player;
 }
 
-sf::Uint8 Game::getTitleAlpha() const
+sf::Color Game::getTitleColor() const
 {
-	return m_titleColor.a;
+	return m_titleColor;
 }
 
-void Game::setTitleAlpha(sf::Uint8 newAlpha)
+void Game::setTitleColor(sf::Color color)
 {
-	m_titleColor.a = newAlpha;
-
+	m_titleColor = color;
 	m_title.setFillColor(m_titleColor);
 }
 
@@ -173,28 +172,6 @@ GameState* Game::peekState()
 	return m_states.top();
 }
 
-bool Game::pollEvent(sf::Event & event)
-{
-	return m_window.pollEvent(event);
-}
-
-void Game::handleEvent(sf::Event & event)
-{
-	switch (event.type)
-	{
-	case sf::Event::Closed:
-		close();
-		return;
-
-	case sf::Event::Resized:
-		updateRender(event.size.width, event.size.height);
-		break;
-
-	default:
-		break;
-	}
-}
-
 void Game::gameLoop()
 {
 	while (m_window.isOpen())
@@ -240,11 +217,14 @@ void Game::updateRender(sf::VideoMode videoMode)
 
 void Game::updateRender(unsigned int width, unsigned int height, unsigned int bitsPerPixel)
 {
-	m_videoMode = sf::VideoMode(width, height, bitsPerPixel);
+	m_currentVideoMode = sf::VideoMode(width, height, bitsPerPixel);
 	m_aspectRatio = float(width) / float(height);
 	m_defaultViewSize = sf::Vector2f(WORLD_SIZE.x, WORLD_SIZE.x / m_aspectRatio);
 	m_view.setSize(m_defaultViewSize * m_viewZoom);
 	m_view.setCenter(VIEW_CENTER);
+
+	m_title.setScale(float(m_currentVideoMode.width) / float(m_bestVideoMode.width),
+					 float(m_currentVideoMode.width) / float(m_bestVideoMode.width));
 
 	m_world.updateBounds(sf::FloatRect(VIEW_CENTER.x - m_defaultViewSize.x / 2,
 									   VIEW_CENTER.y - m_defaultViewSize.y / 2,
@@ -254,16 +234,36 @@ void Game::updateRender(unsigned int width, unsigned int height, unsigned int bi
 
 void Game::handleInput()
 {
-#ifdef __ANDROID__
-	if (sf::Touch::isDown(0))
+	while (m_window.pollEvent(m_event))
 	{
-		m_mousePosition = sf::Touch::getPosition(0, m_window);
-}
-#else
-	m_mousePosition = sf::Mouse::getPosition(m_window);
-#endif // __ANDROID__
+		peekState()->handleInput(m_event);
 
-	peekState()->handleInput(m_event);
+		switch (m_event.type)
+		{
+		case sf::Event::Closed:
+			close();
+			return;
+
+		case sf::Event::Resized:
+			updateRender(m_event.size.width, m_event.size.height);
+			break;
+
+		case sf::Event::MouseMoved:
+			m_mousePosition = sf::Mouse::getPosition(m_window);
+			break;
+
+		case sf::Event::TouchMoved:
+			m_mousePosition = sf::Touch::getPosition(0, m_window);
+			break;
+
+		case sf::Event::TouchBegan:
+			m_mousePosition = sf::Touch::getPosition(0, m_window);
+			break;
+
+		default:
+			break;
+		}
+	}
 }
 
 void Game::update()
@@ -272,56 +272,38 @@ void Game::update()
 
 	while (m_elapsed.asSeconds() >= frameTime)
 	{
-		m_world.update(1.4f);
-		peekState()->update(1.4f);
+		m_background.update(sf::seconds(frameTime));
+		m_world.update(sf::seconds(frameTime));
+		peekState()->update(sf::seconds(frameTime));
 		m_elapsed -= sf::seconds(frameTime);
 
 #if defined(_DEBUG) || defined(__ANDROID__)
-		m_updates++;
+		m_updatesCounter++;
 #endif // _DEBUG
 	}
 
 #if defined(_DEBUG) || defined(__ANDROID__)
-	m_dPlayerPos = "Player position: x: " + std::to_string(static_cast<int>(m_player.getPosition().x)) +
-		" y: " + std::to_string(static_cast<int>(m_player.getPosition().y)) + '\n';
 
-	m_dViewSize = "View size: x: " + std::to_string(static_cast<int>(m_view.getSize().x)) +
-		" y: " + std::to_string(static_cast<int>(m_view.getSize().y)) + '\n';
-
-	m_dTitleAlpha = "Title alpha: " + std::to_string(m_titleColor.a) + '\n';
-
-	m_dMousePosition = "Mouse position: x: " + std::to_string(getWorldMousePosition(m_view).x) +
-		" y: " + std::to_string(getWorldMousePosition(m_view).y) + '\n';
+	m_debugOverlay.update();
 
 	if (m_titleClock.getElapsedTime().asSeconds() >= 1)
 	{
-		std::string title = "Game | updates: ";
-		title.append(std::to_string(m_updates));
-		title.append(" frames: ");
-		title.append(std::to_string(m_frames));
-		m_window.setTitle(title);
+		m_ups = m_updatesCounter;
+		m_fps = m_framesCounter;
 
-		m_dUpdates = "Updates: " + std::to_string(m_updates) + '\n';
-		m_dFrames = "Frames: " + std::to_string(m_frames) + '\n';
+		m_updatesCounter = 0;
+		m_framesCounter = 0;
 
-		m_updates = 0;
-		m_frames = 0;
 		m_titleClock.restart();
 	}
-
-	m_debugText.setString(m_dBitsPerPixel +
-						  m_dUpdates +
-						  m_dFrames +
-						  m_dPlayerPos +
-						  m_dViewSize +
-						  m_dTitleAlpha +
-						  m_dMousePosition);
 #endif
 }
 
 void Game::render()
 {
 	m_window.clear(sf::Color::Black);
+
+	m_window.draw(m_background);
 
 	m_window.setView(m_view);
 
@@ -335,10 +317,8 @@ void Game::render()
 	m_window.draw(m_title);
 
 #if defined(_DEBUG) || defined(__ANDROID__)
-	m_window.setView(m_window.getDefaultView());
-	m_window.draw(m_debugText);
-
-	m_frames++;
+	m_window.draw(m_debugOverlay);
+	m_framesCounter++;
 #endif
 	m_window.display();
 }

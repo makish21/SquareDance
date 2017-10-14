@@ -7,7 +7,7 @@ class DefaultEnemy :
 public:
 	DefaultEnemy(float y, float velocityX);
 
-	virtual void update(World&, float time);
+	virtual void update(World&, sf::Time elapsed);
 
 	virtual Enemy* clone();
 

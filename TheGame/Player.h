@@ -18,11 +18,14 @@ public:
 	sf::FloatRect getRect() const;
 
 	sf::Vector2f getVelocity() const;
+	void setVelocity(const sf::Vector2f& velocity);
 
-	virtual void left();
-	virtual void right();
+	virtual void moveLeft();
+	virtual void moveRight();
+	virtual void stopMovingLeft();
+	virtual void stopMovingRight();
 
-	virtual void update(World&, float time);
+	virtual void update(World&, sf::Time elapsed);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:

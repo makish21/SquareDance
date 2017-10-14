@@ -1,17 +1,17 @@
 #include "ToGameTransition.h"
-
-#define VIEW_ZOOM 1.f
-#define PLAYER_POSITION sf::Vector2f(400.f, 140.f)
-#define WORLD_ALPHA 10
-#define TITLE_ALPHA 0
+#include "Definitions.hpp"
 
 ToGameTransition::ToGameTransition(Game* game) :
-	Transition(game,
-			   2.f,
-			   VIEW_ZOOM,
-			   PLAYER_POSITION,
-			   WORLD_ALPHA,
-			   TITLE_ALPHA),
+	GameState(game),
+	c_transitionDuration(2.f),
+	c_oldPlayerPosition(game->getPlayer()->getPosition()),
+	c_oldViewZoom(game->getViewZoom()),
+	c_oldTitleColor(game->getTitleColor()),
+	c_oldWorldColor(game->getWorld()->getBoundsColor()),
+	c_newViewZoom(GAME_VIEW_ZOOM),
+	c_newPlayerPosition(GAME_PLAYER_POSITION),
+	c_newWorldColor(GAME_WORLD_COLOR),
+	c_newTitleColor(GAME_TITLE_COLOR),
 	c_oldPlayerRotation(game->getPlayer()->getRotation()),
 	c_newPlayerRotation(c_oldPlayerRotation - (std::fmod(c_oldPlayerRotation, 90.f)) + 45.f)
 {
@@ -23,20 +23,21 @@ ToGameTransition::~ToGameTransition()
 
 void ToGameTransition::handleInput(sf::Event & event)
 {
-	while (m_game->pollEvent(event))
-	{
-		m_game->handleEvent(event);
-	}
 }
 
-void ToGameTransition::update(float time)
+void ToGameTransition::update(sf::Time elapsed)
 {
-	sf::Time elapsed = m_transitionClock.getElapsedTime();
+	m_elapsedTime += elapsed;
 
-	if (elapsed.asSeconds() <= m_transitionTime)
+	if (m_elapsedTime.asSeconds() <= c_transitionDuration)
 	{
-		calculateTransition(elapsed.asSeconds());
-		m_game->getPlayer()->setRotation(translate(elapsed.asSeconds(),
+		m_game->setViewZoom(translate(m_elapsedTime, c_transitionDuration, c_oldViewZoom, c_newViewZoom));
+		m_game->getPlayer()->setPosition(translate(m_elapsedTime, c_transitionDuration, c_oldPlayerPosition, c_newPlayerPosition));
+		m_game->setTitleColor(translate(m_elapsedTime, c_transitionDuration, c_oldTitleColor, c_newTitleColor));
+		m_game->getWorld()->setBoundsColor(translate(m_elapsedTime, c_transitionDuration, c_oldWorldColor, c_newWorldColor));
+
+		m_game->getPlayer()->setRotation(translate(m_elapsedTime,
+												   c_transitionDuration,
 												   c_oldPlayerRotation,
 												   c_newPlayerRotation));
 	}

@@ -15,7 +15,7 @@ public:
 
 
 	virtual void handleInput(sf::Event&) = 0;
-	virtual void update(float time) = 0;
+	virtual void update(sf::Time elapsed) = 0;
 	virtual void draw(sf::RenderWindow& window) = 0;
 protected:
 	Game* m_game;

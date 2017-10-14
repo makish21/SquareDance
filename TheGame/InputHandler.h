@@ -7,27 +7,29 @@
 class InputHandler
 {
 public:
-#ifdef __ANDROID__
 	InputHandler(const sf::IntRect& leftArea,
-				 const sf::IntRect& rightArea);
-#else
-	InputHandler(sf::Keyboard::Key left,
+				 const sf::IntRect& rightArea,
+				 sf::Keyboard::Key left,
 				 sf::Keyboard::Key right);
-#endif
 
 	~InputHandler();
 
 	Command* handleInput(sf::Event& event);
 
 private:
-#ifdef __ANDROID__
+	Command* handleTouch(sf::Event& event);
+	Command* handleKeyboard(sf::Event& event);
+
 	sf::IntRect m_leftArea;
 	sf::IntRect m_rightArea;
-#else
 	sf::Keyboard::Key m_leftKey;
 	sf::Keyboard::Key m_rightKey;
-#endif // __ANDROID__
 
-	Command* m_left;
-	Command* m_right;
+	bool isMovesLeft;
+	bool isMovesRight;
+
+	Command* m_moveLeft;
+	Command* m_moveRight;
+	Command* m_stopMovingLeft;
+	Command* m_stopMovingRight;
 };

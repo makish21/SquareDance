@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <SFML\Graphics.hpp>
+#include "Vector2.hpp"
 
 struct Particle
 {
@@ -13,7 +14,7 @@ class ParticleSystem :
 	public sf::Transformable
 {
 public:
-	ParticleSystem(sf::Uint16 count);
+	ParticleSystem(sf::Uint16 count, unsigned int windowWidth);
 	~ParticleSystem();
 
 	void setEmitter(sf::Vector2f position);
@@ -21,10 +22,13 @@ public:
 
 	void resetParticles();
 
-	void update(float elapsed);
+	void update(sf::Time elapsed);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
+	sf::Clock m_clock;
+
+	unsigned int m_windowWidth;
 	std::vector<Particle> m_particles;
 	std::vector<sf::VertexArray> m_vertices;
 	sf::Time m_lifetime;

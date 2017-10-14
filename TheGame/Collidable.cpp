@@ -12,6 +12,8 @@ Collidable::Collidable(cd::Collision * collision) :
 
 Collidable::~Collidable()
 {
+	delete m_collision;
+	m_collision = nullptr;
 }
 
 bool Collidable::intersects(const Collidable & other)

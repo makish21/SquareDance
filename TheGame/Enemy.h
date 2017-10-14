@@ -12,7 +12,7 @@ public:
 	Enemy(float x, float y);
 	virtual ~Enemy();
 
-	virtual void update(World&, float time) = 0;
+	virtual void update(World&, sf::Time elapsed) = 0;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	virtual Enemy* clone() = 0;

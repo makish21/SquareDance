@@ -28,17 +28,15 @@ public:
 	~GameProcessState();
 
 	virtual void handleInput(sf::Event&);
-	virtual void update(float time);
+	virtual void update(sf::Time elapsed);
 	virtual void draw(sf::RenderWindow&);
 
 private:
-	const float VIEW_ZOOM = 1.f;
-	const sf::Vector2f PLAYER_POSITION = sf::Vector2f(400.f, 140.f);
 	const sf::Uint8 WORLD_TRANSPARENCY = 10;
 
-	void begin(float time);
-	void process(float time);
-	void revival(float time);
+	void begin(sf::Time elapsed);
+	void process(sf::Time elapsed);
+	void revival(sf::Time elapsed);
 
 	State m_state;
 	ParticleSystem m_particleSystem;
@@ -46,6 +44,7 @@ private:
 	std::string getElapsedString(sf::Int32 milliseconds);
 
 	sf::Sound m_sound;
+	sf::Sound m_deathSound;
 
 	std::list<Object*> m_objects;
 

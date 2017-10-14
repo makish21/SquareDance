@@ -11,14 +11,11 @@ public:
 	~MainMenuState();
 
 	virtual void draw(sf::RenderWindow& window);
-	virtual void update(float time);
+	virtual void update(sf::Time elapsed);
 	virtual void handleInput(sf::Event& event);
 
 private:
-	const float VIEW_ZOOM = 0.5f;
-	const sf::Vector2f PLAYER_POSITION = sf::Vector2f(400.f, 140.f);
 	const sf::Uint8 WORLD_TRANSPARENCY = 0;
-	const sf::Uint8 TITLE_ALPHA = 255;
 
 	sf::Sound m_sound;
 

@@ -15,11 +15,11 @@ public:
 
 	void setShader(sf::Shader* shader);
 
-	void setAlpha(sf::Uint8 alpha);
-	sf::Uint8 getAlpha();
+	void setBoundsColor(sf::Color color);
+	sf::Color getBoundsColor();
 
 	void updateBounds(const sf::FloatRect& view);
-	void update(float time);
+	void update(sf::Time elapsed);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	~World();

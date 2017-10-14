@@ -3,6 +3,8 @@
 #include <SFML\Audio.hpp>
 #include <stack>
 
+#include "Background.h"
+#include "DebugOverlay.h"
 #include "FileManager.h"
 #include "World.h"
 #include "Player.h"
@@ -12,11 +14,12 @@ class World;
 
 class Game
 {
+	friend class DebugOverlay;
 public:
 	Game();
 	~Game();
 
-	sf::RenderTarget* getWindow();
+	sf::RenderWindow* getWindow();
 
 	sf::View* getView();
 	const sf::Vector2f& getDefaultViewSize() const;
@@ -28,8 +31,8 @@ public:
 	World* getWorld();
 	Player* getPlayer();
 
-	sf::Uint8 getTitleAlpha() const;
-	void setTitleAlpha(sf::Uint8 newAlpha);
+	sf::Color getTitleColor() const;
+	void setTitleColor(sf::Color color);
 
 	sf::Vector2i getPixelMousePosition() const;
 	sf::Vector2i getPixelMousePosition(const sf::View& view) const;
@@ -41,9 +44,6 @@ public:
 	void changeState(GameState* state);
 
 	GameState* peekState();
-
-	bool pollEvent(sf::Event& event);
-	void handleEvent(sf::Event& event);
 
 	void gameLoop();
 
@@ -61,7 +61,8 @@ private:
 
 	void restartClock();
 
-	sf::VideoMode m_videoMode;
+	sf::VideoMode m_bestVideoMode;
+	sf::VideoMode m_currentVideoMode;
 	sf::ContextSettings m_settings;
 	sf::RenderWindow m_window;
 
@@ -71,6 +72,9 @@ private:
 	sf::View m_view;
 
 	FileManager m_fileManager;
+
+	Background m_background;
+
 	World m_world;
 	Player m_player;
 
@@ -88,19 +92,14 @@ private:
 
 	// Debug info
 #if defined(_DEBUG) || defined(__ANDROID__)
+	DebugOverlay m_debugOverlay;
+
 	sf::Clock m_titleClock;
-	unsigned int m_updates;
-	unsigned int m_frames;
+	unsigned int m_updatesCounter;
+	unsigned int m_framesCounter;
 
-	std::string m_dBitsPerPixel;
-	std::string m_dUpdates;
-	std::string m_dFrames;
-	std::string m_dPlayerPos;
-	std::string m_dViewSize;
-	std::string m_dTitleAlpha;
-	std::string m_dMousePosition;
-
-	sf::Text m_debugText;
+	unsigned int m_ups;
+	unsigned int m_fps;
 #endif // _DEBUG
 };
 

@@ -34,19 +34,13 @@
     <Filter Include="Game\Engine\Objects">
       <UniqueIdentifier>{210acb12-6aa0-4497-9dae-4747a1bab168}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Transitions">
+    <Filter Include="Game\States\Transitions">
       <UniqueIdentifier>{30b14b2b-2a09-4228-952c-b54ea0d5f39d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Game\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentsBar.cpp">
-      <Filter>Game\GUI</Filter>
     </ClCompile>
     <ClCompile Include="RoundedRectangleShape.cpp">
       <Filter>Game\GUI</Filter>
@@ -85,26 +79,32 @@
       <Filter>Game\States</Filter>
     </ClCompile>
     <ClCompile Include="ToMenuTransition.cpp">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClCompile>
     <ClCompile Include="ToGameTransition.cpp">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClCompile>
     <ClCompile Include="Transition.cpp">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClCompile>
     <ClCompile Include="FileManager.cpp">
       <Filter>Game\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="DebugOverlay.cpp">
+      <Filter>Game\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Game\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
-      <Filter>Game\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentsBar.h">
       <Filter>Game\GUI</Filter>
     </ClInclude>
     <ClInclude Include="RoundedRectangleShape.h">
@@ -156,13 +156,13 @@
       <Filter>Game\Engine\Input</Filter>
     </ClInclude>
     <ClInclude Include="ToMenuTransition.h">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClInclude>
     <ClInclude Include="ToGameTransition.h">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClInclude>
     <ClInclude Include="Transition.h">
-      <Filter>Game\Transitions</Filter>
+      <Filter>Game\States\Transitions</Filter>
     </ClInclude>
     <ClInclude Include="FileManager.h">
       <Filter>Game\Engine</Filter>
@@ -170,8 +170,14 @@
     <ClInclude Include="Definitions.hpp">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="DebugOverlay.h">
+      <Filter>Game\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Game\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

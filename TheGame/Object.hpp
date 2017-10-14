@@ -26,7 +26,7 @@ public:
 		return m_life;
 	}
 
-	virtual void update(World&, float time) = 0;
+	virtual void update(World&, sf::Time elapsed) = 0;
 
 protected:
 	bool m_life;

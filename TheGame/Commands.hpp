@@ -7,20 +7,38 @@ public:
 	virtual void execute(Controllable&) = 0;
 };
 
-class LeftCommand : public Command
+class MoveLeftCommand : public Command
 {
 public:
 	virtual void execute(Controllable& controllable)
 	{
-		controllable.left();
+		controllable.moveLeft();
 	}
 };
 
-class RightCommand : public Command
+class MoveRightCommand : public Command
 {
 public:
 	virtual void execute(Controllable& controllable)
 	{
-		controllable.right();
+		controllable.moveRight();
+	}
+};
+
+class StopMovingLeftCommand : public Command
+{
+public:
+	virtual void execute(Controllable& controllable)
+	{
+		controllable.stopMovingLeft();
+	}
+};
+
+class StopMovingRightCommand : public Command
+{
+public:
+	virtual void execute(Controllable& controllable)
+	{
+		controllable.stopMovingRight();
 	}
 };

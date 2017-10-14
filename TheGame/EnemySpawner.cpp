@@ -1,13 +1,6 @@
 #include "EnemySpawner.h"
+#include "Definitions.hpp"
 
-
-EnemySpawner::EnemySpawner(std::list<Object*>* container) :
-	m_container(container),
-	m_breakTime(4.f)
-{
-	m_clock.restart();
-	m_randomGenerator.seed(m_randomDevice());
-}
 
 EnemySpawner::EnemySpawner(std::list<Object*>* container,
 						   SpawnPresets* presets) :
@@ -15,22 +8,33 @@ EnemySpawner::EnemySpawner(std::list<Object*>* container,
 	m_spawnPresets(presets),
 	m_distribution(0, presets->getSize() - 1),
 	m_randomGenerator(m_randomDevice()),
-	m_breakTime(2.f)
+	m_breakTime(FIRST_SPAWN_TIME_DELAY),
+	m_elapsed(0.f)
 {
-	m_clock.restart();
+	reset();
 }
 
 EnemySpawner::~EnemySpawner()
 {
 }
 
-void EnemySpawner::update(float speed)
+void EnemySpawner::reset()
 {
-	float elapsed = m_clock.getElapsedTime().asSeconds();
-
-	if (elapsed * speed >= m_breakTime)
+	while (!m_spawnGroups.empty())
 	{
-		m_breakTime -= elapsed * speed;
+		m_spawnGroups.pop();
+	}
+
+	fillQueue();
+}
+
+void EnemySpawner::update(sf::Time elapsed, float speed)
+{
+	m_elapsed += elapsed.asSeconds() * speed;//m_clock.getElapsedTime().asSeconds();
+
+	if (m_elapsed >= m_breakTime)
+	{
+		m_breakTime -= m_elapsed;
 
 		for (auto i = m_spawnGroups.front().m_enemies.begin();
 			 i != m_spawnGroups.front().m_enemies.end();
@@ -42,13 +46,11 @@ void EnemySpawner::update(float speed)
 		m_breakTime += m_spawnGroups.front().m_breakTime;
 
 		m_spawnGroups.pop();
-		m_clock.restart();
+		m_elapsed = 0.f;
+		//m_clock.restart();
 	}
 
-	while (m_spawnGroups.size() < 5)
-	{
-		addGroups();
-	}
+	fillQueue();
 }
 
 void EnemySpawner::setSpawnPresets(const SpawnPresets * presets)
@@ -57,7 +59,15 @@ void EnemySpawner::setSpawnPresets(const SpawnPresets * presets)
 	m_distribution = std::uniform_int_distribution<size_t>(0, presets->getSize() - 1);
 }
 
-void EnemySpawner::addGroups()
+void EnemySpawner::fillQueue()
+{
+	while (m_spawnGroups.size() < MAX_SPAWNER_QUEUE_SIZE)
+	{
+		addPreset();
+	}
+}
+
+void EnemySpawner::addPreset()
 {
 	size_t key = m_distribution(m_randomGenerator);
 

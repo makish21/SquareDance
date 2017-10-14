@@ -10,17 +10,19 @@
 class EnemySpawner
 {
 public:
-	EnemySpawner(std::list<Object*>* container);
 	EnemySpawner(std::list<Object*>* container, SpawnPresets* presets);
 	~EnemySpawner();
 
-	void update(float speed);
+	void reset();
+	void update(sf::Time elapsed, float speed);
 	void setSpawnPresets(const SpawnPresets* presets);
 
 private:
-	void addGroups();
+	void fillQueue();
+	void addPreset();
 
-	sf::Clock m_clock;
+	//sf::Clock m_clock;
+	float m_elapsed;
 	float m_breakTime;
 
 	std::random_device m_randomDevice;

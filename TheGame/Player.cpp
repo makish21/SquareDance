@@ -60,26 +60,39 @@ sf::Vector2f Player::getVelocity() const
 	return m_velocity;
 }
 
-void Player::left()
+void Player::setVelocity(const sf::Vector2f & velocity)
 {
-	m_velocity.x = -2;
+	m_velocity = velocity;
 }
 
-void Player::right()
+void Player::moveLeft()
 {
-	m_velocity.x = 2;
+	m_velocity.x -= 2.f;
 }
 
-void Player::update(World& world, float time)
+void Player::moveRight()
+{
+	m_velocity.x += 2.f;
+}
+
+void Player::stopMovingLeft()
+{
+	m_velocity.x += 2.f;
+}
+
+void Player::stopMovingRight()
+{
+	m_velocity.x -= 2.f;
+}
+
+void Player::update(World& world, sf::Time elapsed)
 {
 	checkCollisionWithWorld(world);
 	rotateComputation(world);
 	
-	move(m_velocity * time);
+	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
 
 	updateCollision();
-
-	//m_velocity.x = 0;
 
 	if (!m_life)
 	{
@@ -131,10 +144,10 @@ bool Player::checkCollisionWithWorld(const World& world)
 			int dirX = xDiff != 0.f ? static_cast<int>(-xDiff / std::abs(-xDiff)) : 0;
 			int dirY = yDiff != 0.f ? static_cast<int>(-yDiff / std::abs(-yDiff)) : 0;
 
-			if (widthDiff > 0.f)
-			{
-				m_velocity.x = static_cast<float>(dirX);
-			}
+			//if (widthDiff > 0.f)
+			//{
+			//	//m_velocity.x -= static_cast<float>(dirX) * m_velocity.x;
+			//}
 			if (heightDiff > 0.f)
 			{
 				m_velocity.y = -m_velocity.y;
@@ -145,9 +158,9 @@ bool Player::checkCollisionWithWorld(const World& world)
 				}
 			}
 
-			if (widthDiff != 0.f && heightDiff != 0.f)
+			if (heightDiff != 0.f || widthDiff != 0.f)
 			{
-				move(widthDiff * dirX, heightDiff * dirY);
+				move(widthDiff * dirX, (heightDiff * 2.f) * dirY);
 			}
 
 			return true;
