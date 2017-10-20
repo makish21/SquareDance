@@ -8,6 +8,11 @@
 #include "FileManager.h"
 #include "World.h"
 #include "Player.h"
+#include "InputHandler.h"
+#include "EnemySpawner.h"
+#include "Definitions.hpp"
+
+using GameObjects = std::list<Object*>;
 
 class GameState;
 class World;
@@ -21,15 +26,10 @@ public:
 
 	sf::RenderWindow* getWindow();
 
-	sf::View* getView();
 	const sf::Vector2f& getDefaultViewSize() const;
 	float getViewZoom() const;
 
 	void setViewZoom(float newZoom);
-
-	FileManager* getFileManager();
-	World* getWorld();
-	Player* getPlayer();
 
 	sf::Color getTitleColor() const;
 	void setTitleColor(sf::Color color);
@@ -38,6 +38,9 @@ public:
 	sf::Vector2i getPixelMousePosition(const sf::View& view) const;
 	sf::Vector2f getWorldMousePosition() const;
 	sf::Vector2f getWorldMousePosition(const sf::View& view) const;
+
+	void setMusicVolume(float volume);
+	float getMusicVolume() const;
 
 	void pushState(GameState* state);
 	void popState();
@@ -49,7 +52,7 @@ public:
 
 	void close();
 
-private: 
+private:
 	void clearStates();
 
 	void updateRender(sf::VideoMode videoMode);
@@ -61,34 +64,38 @@ private:
 
 	void restartClock();
 
-	sf::VideoMode m_bestVideoMode;
-	sf::VideoMode m_currentVideoMode;
+	// Window members
+	sf::VideoMode       m_bestVideoMode;
+	sf::VideoMode       m_currentVideoMode;
 	sf::ContextSettings m_settings;
-	sf::RenderWindow m_window;
+	sf::RenderWindow    m_window;
 
-	float m_aspectRatio;
+	// View members
+	float        m_aspectRatio;
 	sf::Vector2f m_defaultViewSize;
-	float m_viewZoom;
-	sf::View m_view;
+	float        m_viewZoom;
+	sf::View     m_view;
 
-	FileManager m_fileManager;
+	// Game members
+	Background  m_background;
+	World       m_world;
+	Player      m_player;
+	GameObjects m_gameObjects;
+	sf::Color   m_titleColor;
+	sf::Text    m_title;
+	sf::Music   m_music;
 
-	Background m_background;
-
-	World m_world;
-	Player m_player;
-
-	sf::Color m_titleColor;
-	sf::Text m_title;
-
+	// State members
 	std::stack<GameState*> m_states;
 
-	sf::Event m_event;
-
+	// Engine members
+	FileManager  m_fileManager;
+	InputHandler m_playerInputHandler;
+	EnemySpawner m_enemySpawner;
+	sf::Event    m_event;
 	sf::Vector2i m_mousePosition;
-
-	sf::Clock m_clock;
-	sf::Time m_elapsed;
+	sf::Clock    m_clock;
+	sf::Time     m_elapsed;
 
 	// Debug info
 #if defined(_DEBUG) || defined(__ANDROID__)

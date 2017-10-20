@@ -4,8 +4,6 @@
 int main()
 {
 	Game game;
-
-	game.pushState(new ToMenuTransition(&game));
 	game.gameLoop();
 
 	return 0;

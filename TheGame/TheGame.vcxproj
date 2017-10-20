@@ -136,8 +136,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\makis\Source\Repos\2d-collision-detection\CollisionDetection\x64\bin;C:\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;opengl32.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;CollisionDetection-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\makis\Source\Repos\2d-collision-detection\CollisionDetection\bin\x64\Collider2D;C:\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;opengl32.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;Collider2D-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -200,6 +200,8 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PreparationState.cpp" />
+    <ClCompile Include="RevivalState.cpp" />
     <ClCompile Include="RoundedRectangleShape.cpp" />
     <ClCompile Include="SpawnPresets.cpp" />
     <ClCompile Include="ToGameTransition.cpp" />
@@ -212,6 +214,7 @@
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Commands.hpp" />
     <ClInclude Include="Controllable.hpp" />
+    <ClInclude Include="CrossPlatform.hpp" />
     <ClInclude Include="DebugOverlay.h" />
     <ClInclude Include="DefaultEnemy.h" />
     <ClInclude Include="Definitions.hpp" />
@@ -226,6 +229,8 @@
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PreparationState.h" />
+    <ClInclude Include="RevivalState.h" />
     <ClInclude Include="RoundedRectangleShape.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="SpawnPresets.h" />

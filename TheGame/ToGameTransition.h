@@ -6,10 +6,16 @@ class ToGameTransition :
 	public GameState
 {
 public:
-	ToGameTransition(Game* game);
+	ToGameTransition(Game* const game,
+					 FileManager* const fileManager,
+					 sf::View* const view,
+					 Player* const player,
+					 EnemySpawner* const enemySpawner,
+					 GameObjects* const gameObjects,
+					 World* const world);
 	~ToGameTransition();
 
-	virtual void handleInput(sf::Event& event);
+	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
 	virtual void draw(sf::RenderWindow& window);
 

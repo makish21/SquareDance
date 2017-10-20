@@ -1,15 +1,16 @@
 #pragma once
-#include <list>
+//#include <list>
 #include <queue>
 #include <random>
 #include <SFML\Graphics.hpp>
 
-#include "Object.hpp"
+#include "Definitions.hpp"
 #include "SpawnPresets.h"
 
 class EnemySpawner
 {
 public:
+	EnemySpawner(std::list<Object*>* container);
 	EnemySpawner(std::list<Object*>* container, SpawnPresets* presets);
 	~EnemySpawner();
 

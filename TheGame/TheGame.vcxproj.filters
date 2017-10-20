@@ -102,6 +102,12 @@
     <ClCompile Include="Button.cpp">
       <Filter>Game\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="PreparationState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="RevivalState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -178,6 +184,15 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PreparationState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="RevivalState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossPlatform.hpp">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "GameState.h"
-#include "Definitions.hpp"
+#include "ToMenuTransition.h"
 
 Game::Game() :
 	m_bestVideoMode(sf::VideoMode::getFullscreenModes()[0]),
@@ -10,7 +10,7 @@ Game::Game() :
 	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
 	//
 #else
-	m_currentVideoMode(sf::VideoMode::getFullscreenModes()[0]),
+	m_currentVideoMode(/*sf::VideoMode(854, 480)*/sf::VideoMode::getFullscreenModes()[0]),
 	m_settings(0, 0, 4),
 	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
 #endif
@@ -18,10 +18,19 @@ Game::Game() :
 	m_viewZoom(INITIAL_VIEW_ZOOM),
 	m_world(this),
 	m_player(VIEW_CENTER.x, VIEW_CENTER.y, 20, 20),
-	m_titleColor(INITIAL_TITLE_COLOR)
+	m_titleColor(INITIAL_TITLE_COLOR),
+	m_playerInputHandler(sf::IntRect(0, 0,
+									 m_window.getSize().x / 2,
+									 m_window.getSize().y),
+						 sf::IntRect(m_window.getSize().x / 2, 0,
+									 m_window.getSize().x / 2,
+									 m_window.getSize().y),
+						 sf::Keyboard::Left,
+						 sf::Keyboard::Right),
+	m_enemySpawner(&m_gameObjects)
 {
 #ifdef _DEBUG
-	//m_window.setFramerateLimit(60);
+	m_window.setFramerateLimit(60);
 #endif // DEBUG
 	m_window.setKeyRepeatEnabled(false);
 
@@ -31,10 +40,11 @@ Game::Game() :
 
 	m_fileManager.loadSound("Space", "");
 	m_fileManager.loadSound("Courtesy", "");
-	m_fileManager.loadSound("Otis", "Courtesy.ogg");
+	//m_fileManager.loadSound("Otis", "Courtesy.ogg");
 	m_fileManager.loadSound("RecordRewind", "RecordRewind.ogg");
 
 	m_fileManager.loadSpawnPresets("SpawnPresets.txt");
+	m_enemySpawner.setSpawnPresets(m_fileManager.getSpawnPresets());
 
 	if (sf::Shader::isAvailable())
 	{
@@ -44,6 +54,11 @@ Game::Game() :
 	}
 
 	updateRender(m_currentVideoMode);
+
+	m_music.openFromFile("Courtesy.ogg");
+	m_music.setLoop(true);
+	m_music.setVolume(50.f);
+	m_music.play();
 
 	m_title.setFont(*m_fileManager.getFont("Helvetica"));
 	m_title.setString(GAME_NAME);
@@ -57,6 +72,15 @@ Game::Game() :
 	m_title.setFillColor(m_titleColor);
 
 	m_clock.restart();
+
+	pushState(new ToMenuTransition(this, 
+								   &m_fileManager,
+								   &m_view,
+								   &m_player,
+								   &m_enemySpawner,
+								   &m_gameObjects,
+								   &m_world));
+
 #if defined(_DEBUG) || defined(__ANDROID__)
 	m_debugOverlay.setGame(this);
 	m_debugOverlay.setFont(m_fileManager.getFont("Futurica"));
@@ -71,11 +95,6 @@ Game::~Game()
 sf::RenderWindow * Game::getWindow()
 {
 	return &m_window;
-}
-
-sf::View * Game::getView()
-{
-	return &m_view;
 }
 
 const sf::Vector2f & Game::getDefaultViewSize() const
@@ -93,21 +112,6 @@ void Game::setViewZoom(float newZoom)
 	m_viewZoom = newZoom;
 
 	m_view.setSize(m_defaultViewSize * newZoom);
-}
-
-FileManager * Game::getFileManager()
-{
-	return &m_fileManager;
-}
-
-World * Game::getWorld()
-{
-	return &m_world;
-}
-
-Player * Game::getPlayer()
-{
-	return &m_player;
 }
 
 sf::Color Game::getTitleColor() const
@@ -139,6 +143,16 @@ sf::Vector2f Game::getWorldMousePosition() const
 sf::Vector2f Game::getWorldMousePosition(const sf::View & view) const
 {
 	return m_window.mapPixelToCoords(m_mousePosition, view);
+}
+
+void Game::setMusicVolume(float volume)
+{
+	m_music.setVolume(volume);
+}
+
+float Game::getMusicVolume() const
+{
+	return m_music.getVolume();
 }
 
 void Game::pushState(GameState* state)
@@ -236,6 +250,13 @@ void Game::handleInput()
 {
 	while (m_window.pollEvent(m_event))
 	{
+		Command* command = m_playerInputHandler.handleInput(m_event);
+
+		if (command != nullptr)
+		{
+			command->execute(m_player);
+		}
+
 		peekState()->handleInput(m_event);
 
 		switch (m_event.type)
@@ -273,7 +294,7 @@ void Game::update()
 	while (m_elapsed.asSeconds() >= frameTime)
 	{
 		m_background.update(sf::seconds(frameTime));
-		m_world.update(sf::seconds(frameTime));
+		m_world.update(sf::seconds(frameTime), &m_player, &m_view);
 		peekState()->update(sf::seconds(frameTime));
 		m_elapsed -= sf::seconds(frameTime);
 
@@ -309,6 +330,11 @@ void Game::render()
 
 	m_window.draw(m_world);
 	m_window.draw(m_player);
+
+	for (auto i = m_gameObjects.begin(); i != m_gameObjects.end(); i++)
+	{
+		m_window.draw(**i);
+	}
 
 	peekState()->draw(m_window);
 

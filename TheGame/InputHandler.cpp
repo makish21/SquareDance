@@ -25,7 +25,7 @@ InputHandler::~InputHandler()
 	delete m_stopMovingRight;
 }
 
-Command * InputHandler::handleInput(sf::Event& event)
+Command * InputHandler::handleInput(const sf::Event& event)
 {
 	if (m_leftArea.contains(sf::Vector2i(event.touch.x, event.touch.y)) && event.touch.finger == 0)
 	{

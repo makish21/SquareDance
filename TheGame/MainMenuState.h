@@ -7,17 +7,19 @@ class MainMenuState :
 	public GameState
 {
 public:
-	MainMenuState(Game* game);
+	MainMenuState(Game* const game,
+				  FileManager* const fileManager,
+				  sf::View* const view,
+				  Player* const player,
+				  EnemySpawner* const enemySpawner,
+				  GameObjects* const gameObjects,
+				  World* const world);
 	~MainMenuState();
 
 	virtual void draw(sf::RenderWindow& window);
 	virtual void update(sf::Time elapsed);
-	virtual void handleInput(sf::Event& event);
+	virtual void handleInput(const sf::Event& event);
 
 private:
-	const sf::Uint8 WORLD_TRANSPARENCY = 0;
-
-	sf::Sound m_sound;
-
 	Button m_playButton;
 };

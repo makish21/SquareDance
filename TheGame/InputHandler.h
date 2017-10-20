@@ -14,12 +14,9 @@ public:
 
 	~InputHandler();
 
-	Command* handleInput(sf::Event& event);
+	Command* handleInput(const sf::Event& event);
 
 private:
-	Command* handleTouch(sf::Event& event);
-	Command* handleKeyboard(sf::Event& event);
-
 	sf::IntRect m_leftArea;
 	sf::IntRect m_rightArea;
 	sf::Keyboard::Key m_leftKey;

@@ -1,6 +1,4 @@
 #include "EnemySpawner.h"
-#include "Definitions.hpp"
-
 
 EnemySpawner::EnemySpawner(std::list<Object*>* container,
 						   SpawnPresets* presets) :
@@ -12,6 +10,14 @@ EnemySpawner::EnemySpawner(std::list<Object*>* container,
 	m_elapsed(0.f)
 {
 	reset();
+}
+
+EnemySpawner::EnemySpawner(std::list<Object*> * container) :
+	m_container(container),
+	m_randomGenerator(m_randomDevice()),
+	m_breakTime(FIRST_SPAWN_TIME_DELAY),
+	m_elapsed(0.f)
+{
 }
 
 EnemySpawner::~EnemySpawner()
@@ -30,7 +36,7 @@ void EnemySpawner::reset()
 
 void EnemySpawner::update(sf::Time elapsed, float speed)
 {
-	m_elapsed += elapsed.asSeconds() * speed;//m_clock.getElapsedTime().asSeconds();
+	m_elapsed += elapsed.asSeconds() * speed;
 
 	if (m_elapsed >= m_breakTime)
 	{
@@ -57,6 +63,8 @@ void EnemySpawner::setSpawnPresets(const SpawnPresets * presets)
 {
 	m_spawnPresets = presets;
 	m_distribution = std::uniform_int_distribution<size_t>(0, presets->getSize() - 1);
+	m_elapsed = 0.f;
+	reset();
 }
 
 void EnemySpawner::fillQueue()

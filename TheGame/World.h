@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 
+class Player;
 class Game;
 
 class World :
@@ -19,7 +20,7 @@ public:
 	sf::Color getBoundsColor();
 
 	void updateBounds(const sf::FloatRect& view);
-	void update(sf::Time elapsed);
+	void update(sf::Time elapsed, Player* const player, sf::View* const view);
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	~World();

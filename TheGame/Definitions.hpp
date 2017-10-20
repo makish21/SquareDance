@@ -1,4 +1,6 @@
 #pragma once
+#include <list>
+#include "Object.hpp"
 
 // Game
 #define GAME_NAME "Square Dance"
@@ -16,6 +18,8 @@
 #define MENU_PLAYER_POSITION sf::Vector2f(400.f, 140.f)
 #define GAME_PLAYER_POSITION sf::Vector2f(400.f, 140.f)
 
+#define MENU_PLAYER_SCALE sf::Vector2f(1.f, 1.f)
+
 #define INITIAL_WORLD_COLOR sf::Color(255, 255, 255, 0)
 #define MENU_WORLD_COLOR sf::Color(255, 255, 255, 0)
 #define GAME_WORLD_COLOR sf::Color(255, 255, 255, 10)
@@ -23,6 +27,14 @@
 #define INITIAL_TITLE_COLOR sf::Color(242, 227, 160, 0)
 #define MENU_TITLE_COLOR sf::Color(242, 227, 160, 255)
 #define GAME_TITLE_COLOR sf::Color(242, 227, 160, 0)
+
+#define TO_MENU_TRANSITION_DURATION 2.f
+#define TO_GAME_TRANSITION_DURATION 2.f
+#define PREPARING_DURATION 0.95f
+#define PLAYER_REVIVAL_DURATION 3.f
+
+#define BACKGROUND_COLOR sf::Color(25, 25, 25, 255)
+#define BACKGROUND_PARTITION_NUM 6.f
 
 // Math
 #define PI 3.14159265358979f
@@ -38,3 +50,7 @@
 // Spawner
 #define MAX_SPAWNER_QUEUE_SIZE 5
 #define FIRST_SPAWN_TIME_DELAY 2.f
+
+
+// Containers
+using GameObjects = std::list<Object*>;

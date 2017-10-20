@@ -1,6 +1,6 @@
 #include "World.h"
 #include "Definitions.hpp"
-
+#include "Player.h"
 #include "Game.h"
 
 World::World(Game * game) :
@@ -50,13 +50,12 @@ void World::updateBounds(const sf::FloatRect & view)
 	}
 }
 
-void World::update(sf::Time elapsed)
+void World::update(sf::Time elapsed, Player* const player, sf::View* const view)
 {
 	if (sf::Shader::isAvailable())
 	{
-		sf::Vector2f playerPosition(m_game->getPlayer()->getPosition());
-		sf::View* gameView = m_game->getView();
-		sf::Vector2f shaderCenter(m_game->getWindow()->mapCoordsToPixel(playerPosition, *gameView));
+		sf::Vector2f playerPosition(player->getPosition());
+		sf::Vector2f shaderCenter(m_game->getWindow()->mapCoordsToPixel(playerPosition, *view));
 
 		float radius = RADIAL_SHADER_FACTOR * m_game->getWindow()->getSize().x / m_game->getViewZoom();
 

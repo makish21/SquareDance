@@ -52,10 +52,10 @@ sf::Color translate(sf::Time elapsed, float duration, sf::Color oldVal, sf::Colo
 
 	sf::Color color;
 
-	color.r = (oldVal.r - newVal.r) * factor + newVal.r;
-	color.g = (oldVal.g - newVal.g) * factor + newVal.g;
-	color.b = (oldVal.b - newVal.b) * factor + newVal.b;
-	color.a = (oldVal.a - newVal.a) * factor + newVal.a;
+	color.r = static_cast<sf::Uint8>((oldVal.r - newVal.r) * factor + newVal.r);
+	color.g = static_cast<sf::Uint8>((oldVal.g - newVal.g) * factor + newVal.g);
+	color.b = static_cast<sf::Uint8>((oldVal.b - newVal.b) * factor + newVal.b);
+	color.a = static_cast<sf::Uint8>((oldVal.a - newVal.a) * factor + newVal.a);
 
 	return color;
 }
