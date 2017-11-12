@@ -31,6 +31,5 @@ private:
 	std::string m_playerPos;
 	std::string m_viewSize;
 	std::string m_titleAlpha;
-	std::string m_mousePosition;
 };
 

@@ -130,13 +130,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\makis\Source\Repos\2d-collision-detection\CollisionDetection\CollisionDetection;C:\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\makis\Source\Repos\Collider2D\CollisionDetection\CollisionDetection;C:\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\makis\Source\Repos\2d-collision-detection\CollisionDetection\bin\x64\Collider2D;C:\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\makis\Source\Repos\Collider2D\CollisionDetection\bin\x64\Collider2D;C:\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-audio-s-d.lib;opengl32.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;Collider2D-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -183,7 +183,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="AcceptanceBackground.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="DebugOverlay.cpp" />
     <ClCompile Include="DefaultEnemy.cpp" />
@@ -194,27 +194,33 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameProcessState.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="IntroState.cpp" />
     <ClCompile Include="main.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Git-projects\TheGame\TheGame\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PreparationState.cpp" />
+    <ClCompile Include="RenderButton.cpp" />
     <ClCompile Include="RevivalState.cpp" />
     <ClCompile Include="RoundedRectangleShape.cpp" />
     <ClCompile Include="SpawnPresets.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="ToGameTransition.cpp" />
     <ClCompile Include="ToMenuTransition.cpp" />
-    <ClCompile Include="Transition.cpp" />
+    <ClCompile Include="ToPauseTransition.cpp" />
+    <ClCompile Include="Animations.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
+    <ClInclude Include="AcceptanceBackground.h" />
+    <ClInclude Include="Background.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Commands.hpp" />
     <ClInclude Include="Controllable.hpp" />
-    <ClInclude Include="CrossPlatform.hpp" />
+    <ClInclude Include="Android.hpp" />
     <ClInclude Include="DebugOverlay.h" />
     <ClInclude Include="DefaultEnemy.h" />
     <ClInclude Include="Definitions.hpp" />
@@ -225,18 +231,24 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameProcessState.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="IntroState.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Object.hpp" />
+    <ClInclude Include="Observer.hpp" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="PauseState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PreparationState.h" />
+    <ClInclude Include="RenderButton.h" />
     <ClInclude Include="RevivalState.h" />
     <ClInclude Include="RoundedRectangleShape.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="SpawnPresets.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="ToGameTransition.h" />
     <ClInclude Include="ToMenuTransition.h" />
-    <ClInclude Include="Transition.h" />
+    <ClInclude Include="ToPauseTransition.h" />
+    <ClInclude Include="Animations.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

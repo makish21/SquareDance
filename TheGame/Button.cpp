@@ -1,15 +1,13 @@
 #include "Button.h"
 
-Button::Button(const sf::Vector2f & position, const sf::Vector2f & size) :
-	m_rect(position.x, position.y,
-		   size.x, size.y)
+Button::Button() :
+	m_rect(0.f, 0.f, 0.f, 0.f)
 {
 }
 
-Button::Button(sf::FloatRect rect) :
+Button::Button(const sf::FloatRect& rect) :
 	m_rect(rect)
 {
-
 }
 
 
@@ -17,23 +15,19 @@ Button::~Button()
 {
 }
 
-void Button::setPosition(sf::Vector2f position)
+void Button::setRect(const sf::FloatRect & rect)
 {
-	m_rect.left = position.x;
-	m_rect.top = position.y;
+	m_rect = rect;
 }
 
-void Button::setSize(sf::Vector2f size)
+const sf::FloatRect & Button::getRect() const
 {
-	m_rect.width = size.x;
-	m_rect.height = size.y;
+	return m_rect;
 }
 
-bool Button::isPressed(const sf::Event & event, const sf::Vector2f & mouse) const
+bool Button::isPressed(const sf::Event & event, const sf::Vector2f & point) const
 {
-	if ((event.mouseButton.button == sf::Mouse::Left ||
-		 event.touch.finger == 0) &&
-		m_rect.contains(mouse))
+	if (m_rect.contains(point))
 	{
 		if (event.type == sf::Event::MouseButtonPressed ||
 			event.type == sf::Event::TouchBegan)
@@ -45,11 +39,9 @@ bool Button::isPressed(const sf::Event & event, const sf::Vector2f & mouse) cons
 	return false;
 }
 
-bool Button::isReleased(const sf::Event & event, const sf::Vector2f & mouse) const
+bool Button::isReleased(const sf::Event & event, const sf::Vector2f & point) const
 {
-	if ((event.mouseButton.button == sf::Mouse::Left ||
-		 event.touch.finger == 0) &&
-		m_rect.contains(mouse))
+	if (m_rect.contains(point))
 	{
 		if (event.type == sf::Event::MouseButtonReleased ||
 			event.type == sf::Event::TouchEnded)

@@ -1,7 +1,8 @@
 #include "Player.h"
+#include "Definitions.hpp"
 
 Player::Player(float x, float y, float w, float h) : 
-	m_shape(14.1421356f, 4),
+	m_shape(PLAYER_RADIUS, 4),
 	m_velocity(0.f, 3.f)
 {
 	setPosition(x, y);
@@ -31,6 +32,16 @@ Player::~Player()
 			m_collisionVertices[i] = nullptr;
 		}
 	}
+}
+
+void Player::setColor(const sf::Color & color)
+{
+	m_shape.setFillColor(color);
+}
+
+const sf::Color & Player::getColor() const
+{
+	return m_shape.getFillColor();
 }
 
 sf::FloatRect Player::getRect() const
@@ -87,11 +98,11 @@ void Player::stopMovingRight()
 
 void Player::update(World& world, sf::Time elapsed)
 {
+	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
+
 	checkCollisionWithWorld(world);
 	rotateComputation(world);
 	
-	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
-
 	updateCollision();
 
 	if (!m_life)
@@ -144,10 +155,6 @@ bool Player::checkCollisionWithWorld(const World& world)
 			int dirX = xDiff != 0.f ? static_cast<int>(-xDiff / std::abs(-xDiff)) : 0;
 			int dirY = yDiff != 0.f ? static_cast<int>(-yDiff / std::abs(-yDiff)) : 0;
 
-			//if (widthDiff > 0.f)
-			//{
-			//	//m_velocity.x -= static_cast<float>(dirX) * m_velocity.x;
-			//}
 			if (heightDiff > 0.f)
 			{
 				m_velocity.y = -m_velocity.y;
@@ -156,6 +163,12 @@ bool Player::checkCollisionWithWorld(const World& world)
 				{
 					m_rotationDirection = static_cast<int>(m_velocity.x / std::abs(m_velocity.x)) * -dirY;
 				}
+
+				GameEvent event;
+				event.type = GameEvent::PlayerBounced;
+				event.player.x = getPosition().x;
+				event.player.y = getPosition().y;
+				notify(event);
 			}
 
 			if (heightDiff != 0.f || widthDiff != 0.f)

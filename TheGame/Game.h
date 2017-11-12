@@ -2,8 +2,9 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <stack>
+#include <assert.h>
 
-#include "Background.h"
+#include "AcceptanceBackground.h"
 #include "DebugOverlay.h"
 #include "FileManager.h"
 #include "World.h"
@@ -17,6 +18,34 @@ using GameObjects = std::list<Object*>;
 class GameState;
 class World;
 
+struct SharedContext
+{
+	SharedContext(FileManager*  const fm,
+				  sf::View*     const gv,
+				  GameObjects*  const go,
+				  EnemySpawner* const es,
+				  Player*       const p,
+				  World*        const w,
+				  Background*   const b) :
+		fileManager(fm),
+		gameView(gv),
+		objects(go),
+		enemySpawner(es),
+		player(p),
+		world(w),
+		background(b)
+	{
+	};
+
+	FileManager*   const fileManager;
+	sf::View*      const gameView;
+	GameObjects*   const objects;
+	EnemySpawner*  const enemySpawner;
+	Player*        const player;
+	World*         const world;
+	Background*    const background;
+};
+
 class Game
 {
 	friend class DebugOverlay;
@@ -24,7 +53,8 @@ public:
 	Game();
 	~Game();
 
-	sf::RenderWindow* getWindow();
+	sf::VideoMode getCurrentVideoMode() const;
+	sf::VideoMode getBestVideoMode() const;
 
 	const sf::Vector2f& getDefaultViewSize() const;
 	float getViewZoom() const;
@@ -34,26 +64,21 @@ public:
 	sf::Color getTitleColor() const;
 	void setTitleColor(sf::Color color);
 
-	sf::Vector2i getPixelMousePosition() const;
-	sf::Vector2i getPixelMousePosition(const sf::View& view) const;
-	sf::Vector2f getWorldMousePosition() const;
-	sf::Vector2f getWorldMousePosition(const sf::View& view) const;
+	sf::Vector2i mapCoordsToPixel(const sf::Vector2f& point) const;
+	sf::Vector2i mapCoordsToPixel(const sf::Vector2f& point, const sf::View& view) const;
+	sf::Vector2f mapPixelToCoords(const sf::Vector2i& point) const;
+	sf::Vector2f mapPixelToCoords(const sf::Vector2i& point, const sf::View& view) const;
 
 	void setMusicVolume(float volume);
 	float getMusicVolume() const;
 
-	void pushState(GameState* state);
-	void popState();
 	void changeState(GameState* state);
-
-	GameState* peekState();
-
+	
 	void gameLoop();
 
 	void close();
 
 private:
-	void clearStates();
 
 	void updateRender(sf::VideoMode videoMode);
 	void updateRender(unsigned int width, unsigned int height, unsigned int bitsPerPixel = 32U);
@@ -77,28 +102,32 @@ private:
 	sf::View     m_view;
 
 	// Game members
-	Background  m_background;
+	Background* m_background;
 	World       m_world;
 	Player      m_player;
 	GameObjects m_gameObjects;
 	sf::Color   m_titleColor;
-	sf::Text    m_title;
+	sf::Text    m_titleText;
+	sf::Time    m_currentGameTime;
+	sf::Text    m_currentGameTimeText;
+	sf::Time    m_bestTime;
+	sf::Text    m_bestTimeText;
 	sf::Music   m_music;
+	sf::RectangleShape m_screenBlackout;
 
 	// State members
-	std::stack<GameState*> m_states;
+	GameState* m_state;
 
 	// Engine members
 	FileManager  m_fileManager;
 	InputHandler m_playerInputHandler;
 	EnemySpawner m_enemySpawner;
 	sf::Event    m_event;
-	sf::Vector2i m_mousePosition;
 	sf::Clock    m_clock;
 	sf::Time     m_elapsed;
 
 	// Debug info
-#if defined(_DEBUG) || defined(__ANDROID__)
+#ifndef NDEBUG
 	DebugOverlay m_debugOverlay;
 
 	sf::Clock m_titleClock;

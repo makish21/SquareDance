@@ -1,5 +1,5 @@
 #pragma once
-#include "Transition.h"
+#include "Animations.h"
 #include "GameProcessState.h"
 
 class ToGameTransition :
@@ -7,12 +7,7 @@ class ToGameTransition :
 {
 public:
 	ToGameTransition(Game* const game,
-					 FileManager* const fileManager,
-					 sf::View* const view,
-					 Player* const player,
-					 EnemySpawner* const enemySpawner,
-					 GameObjects* const gameObjects,
-					 World* const world);
+					 const SharedContext& sharedContext);
 	~ToGameTransition();
 
 	virtual void handleInput(const sf::Event& event);
@@ -21,7 +16,7 @@ public:
 
 private:
 	sf::Time m_elapsedTime;
-	const float c_transitionDuration;
+	const sf::Time c_transitionDuration;
 
 	const float c_oldPlayerRotation;
 	const float c_newPlayerRotation;

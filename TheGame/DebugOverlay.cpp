@@ -38,10 +38,10 @@ void DebugOverlay::update()
 	//m_openGLVersion = "OpenGL: v" + std::string((char*)(glGetString(GL_VERSION))) + '\n';
 
 	m_shaders = std::string("Is shaders available: ") + (sf::Shader::isAvailable() ? "true" : "false") + '\n';
-
+#ifndef NDEBUG
 	m_updatesCounter = "Updates: " + std::to_string(m_game->m_ups) + '\n';
-
 	m_framesCounter = "Frames: " + std::to_string(m_game->m_fps) + '\n';
+#endif // !NDEBUG
 
 	m_playerPos = "Player position: x: " + std::to_string(static_cast<int>(m_game->m_player.getPosition().x)) +
 		" y: " + std::to_string(static_cast<int>(m_game->m_player.getPosition().y)) + '\n';
@@ -50,9 +50,6 @@ void DebugOverlay::update()
 		" y: " + std::to_string(static_cast<int>(m_game->m_view.getSize().y)) + '\n';
 
 	m_titleAlpha = "Title alpha: " + std::to_string(m_game->m_titleColor.a) + '\n';
-
-	m_mousePosition = "Mouse position: x: " + std::to_string(static_cast<int>(m_game->getWorldMousePosition(m_game->m_view).x)) +
-		" y: " + std::to_string(static_cast<int>(m_game->getWorldMousePosition(m_game->m_view).y)) + '\n';
 
 	m_text.setString(m_windowSize +
 					 m_bitsPerPixel +
@@ -63,8 +60,7 @@ void DebugOverlay::update()
 					 m_framesCounter +
 					 m_playerPos +
 					 m_viewSize +
-					 m_titleAlpha +
-					 m_mousePosition);
+					 m_titleAlpha);
 }
 
 void DebugOverlay::draw(sf::RenderTarget & target, sf::RenderStates states) const

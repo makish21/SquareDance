@@ -6,14 +6,19 @@
 #include "World.h"
 #include "Controllable.hpp"
 #include "Collidable.hpp"
+#include "Subject.h"
 
 class Player :
 	public Object, 
-	public Controllable
+	public Controllable,
+	public Subject
 {
 public:
 	Player(float x, float y, float w, float h);
 	~Player();
+
+	void setColor(const sf::Color& color);
+	const sf::Color& getColor() const;
 
 	sf::FloatRect getRect() const;
 

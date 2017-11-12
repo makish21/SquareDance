@@ -37,6 +37,9 @@
     <Filter Include="Game\States\Transitions">
       <UniqueIdentifier>{30b14b2b-2a09-4228-952c-b54ea0d5f39d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Engine\Backgrounds">
+      <UniqueIdentifier>{1a7f9803-2819-4595-896e-83ffd302ae4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -84,17 +87,11 @@
     <ClCompile Include="ToGameTransition.cpp">
       <Filter>Game\States\Transitions</Filter>
     </ClCompile>
-    <ClCompile Include="Transition.cpp">
-      <Filter>Game\States\Transitions</Filter>
-    </ClCompile>
     <ClCompile Include="FileManager.cpp">
       <Filter>Game\Engine</Filter>
     </ClCompile>
     <ClCompile Include="DebugOverlay.cpp">
       <Filter>Game\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Game\Engine</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Game\Engine</Filter>
@@ -107,6 +104,27 @@
     </ClCompile>
     <ClCompile Include="RevivalState.cpp">
       <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="AcceptanceBackground.cpp">
+      <Filter>Game\Engine\Backgrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ToPauseTransition.cpp">
+      <Filter>Game\States\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderButton.cpp">
+      <Filter>Game\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Animations.cpp">
+      <Filter>Game\States\Transitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +185,6 @@
     <ClInclude Include="ToGameTransition.h">
       <Filter>Game\States\Transitions</Filter>
     </ClInclude>
-    <ClInclude Include="Transition.h">
-      <Filter>Game\States\Transitions</Filter>
-    </ClInclude>
     <ClInclude Include="FileManager.h">
       <Filter>Game\Engine</Filter>
     </ClInclude>
@@ -178,9 +193,6 @@
     </ClInclude>
     <ClInclude Include="DebugOverlay.h">
       <Filter>Game\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Game\Engine</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Game\Engine</Filter>
@@ -191,8 +203,35 @@
     <ClInclude Include="RevivalState.h">
       <Filter>Game\States</Filter>
     </ClInclude>
-    <ClInclude Include="CrossPlatform.hpp">
+    <ClInclude Include="Android.hpp">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="AcceptanceBackground.h">
+      <Filter>Game\Engine\Backgrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.hpp">
+      <Filter>Game\Engine\Backgrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ToPauseTransition.h">
+      <Filter>Game\States\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderButton.h">
+      <Filter>Game\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.hpp">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Animations.h">
+      <Filter>Game\States\Transitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

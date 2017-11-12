@@ -12,18 +12,14 @@
 #include "InputHandler.h"
 #include "EnemySpawner.h"
 #include "ParticleSystem.h"
+#include "RenderButton.h"
 
 class GameProcessState :
 	public GameState
 {
 public:
 	GameProcessState(Game* const game,
-					 FileManager* const fileManager,
-					 sf::View* const view,
-					 Player* const player,
-					 EnemySpawner* const enemySpawner,
-					 GameObjects* const gameObjects,
-					 World* const world);
+					 const SharedContext& sharedContext);
 	~GameProcessState();
 
 	virtual void handleInput(const sf::Event& event);
@@ -34,8 +30,10 @@ private:
 	std::string getElapsedString(sf::Int32 milliseconds);
 
 	sf::Text m_stopwatchText;
+	sf::Texture m_texture;
+	RenderButton m_pauseButton;
 
-	sf::Clock m_sessionClock;
+	//sf::Clock m_sessionClock;
 	sf::Time m_sessionTime;
 	float m_speedFactor;
 };

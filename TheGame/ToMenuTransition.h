@@ -1,5 +1,5 @@
 #pragma once
-#include "Transition.h"
+#include "Animations.h"
 #include "MainMenuState.h"
 
 class ToMenuTransition :
@@ -7,12 +7,7 @@ class ToMenuTransition :
 {
 public:
 	ToMenuTransition(Game* const game,
-					 FileManager* const fileManager,
-					 sf::View* const view,
-					 Player* const player,
-					 EnemySpawner* const enemySpawner,
-					 GameObjects* const gameObjects,
-					 World* const world);
+					 const SharedContext& sharedContext);
 
 	~ToMenuTransition();
 
@@ -22,7 +17,7 @@ public:
 
 private:
 	sf::Time m_elapsedTime;
-	const float        c_transitionDuration;
+	const sf::Time     c_transitionDuration;
 
 	const float        c_oldViewZoom;
 	const sf::Vector2f c_oldPlayerPosition;

@@ -5,12 +5,7 @@ class PreparationState :
 {
 public:
 	PreparationState(Game* const game,
-					 FileManager* const fileManager,
-					 sf::View* const view,
-					 Player* const player,
-					 EnemySpawner* const enemySpawner,
-					 GameObjects* const gameObjects,
-					 World* const world);
+					 const SharedContext& sharedContext);
 	~PreparationState();
 
 	virtual void handleInput(const sf::Event& event);

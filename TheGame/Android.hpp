@@ -1,7 +1,6 @@
 #pragma once
 
 #ifdef __ANDROID__
-
 #include <jni.h>
 #include <android/native_activity.h>
 
@@ -10,7 +9,6 @@
 #include <SFML/System/NativeActivity.hpp>
 
 int vibrate(sf::Time duration)
-
 {
 	// First we'll need the native activity handle
 	ANativeActivity *activity = sf::getNativeActivity();

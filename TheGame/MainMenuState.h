@@ -8,12 +8,7 @@ class MainMenuState :
 {
 public:
 	MainMenuState(Game* const game,
-				  FileManager* const fileManager,
-				  sf::View* const view,
-				  Player* const player,
-				  EnemySpawner* const enemySpawner,
-				  GameObjects* const gameObjects,
-				  World* const world);
+				  const SharedContext& sharedContext);
 	~MainMenuState();
 
 	virtual void draw(sf::RenderWindow& window);

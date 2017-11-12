@@ -69,7 +69,7 @@ void EnemySpawner::setSpawnPresets(const SpawnPresets * presets)
 
 void EnemySpawner::fillQueue()
 {
-	while (m_spawnGroups.size() < MAX_SPAWNER_QUEUE_SIZE)
+	while (m_spawnGroups.size() < MAX_SPAWNER_QUEUE)
 	{
 		addPreset();
 	}

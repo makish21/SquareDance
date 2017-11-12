@@ -45,7 +45,7 @@ void World::updateBounds(const sf::FloatRect & view)
 
 	if (sf::Shader::isAvailable())
 	{
-		float windowHeight = static_cast<float>(m_game->getWindow()->getSize().y);
+		float windowHeight = static_cast<float>(m_game->getCurrentVideoMode().height);
 		m_shader->setUniform("windowHeight", windowHeight);
 	}
 }
@@ -55,9 +55,9 @@ void World::update(sf::Time elapsed, Player* const player, sf::View* const view)
 	if (sf::Shader::isAvailable())
 	{
 		sf::Vector2f playerPosition(player->getPosition());
-		sf::Vector2f shaderCenter(m_game->getWindow()->mapCoordsToPixel(playerPosition, *view));
+		sf::Vector2f shaderCenter(m_game->mapCoordsToPixel(playerPosition, *view));
 
-		float radius = RADIAL_SHADER_FACTOR * m_game->getWindow()->getSize().x / m_game->getViewZoom();
+		float radius = RADIAL_SHADER_FACTOR * m_game->getCurrentVideoMode().width / m_game->getViewZoom();
 
 		m_shader->setUniform("center", shaderCenter);
 		m_shader->setUniform("radius", radius);

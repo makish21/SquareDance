@@ -10,19 +10,21 @@ class GameState
 {
 public:
 	GameState(Game* const game,
-			  FileManager* const fileManager,
+			  const SharedContext& sharedContext
+			  /*FileManager* const fileManager,
 			  sf::View* const view,
 			  Player* const player,
 			  EnemySpawner* const enemySpawner,
 			  GameObjects* const gameObjects,
-			  World* const world) :
+			  World* const world*/) :
 		m_game(game),
-		m_fileManager(fileManager),
+		m_shared(sharedContext)
+		/*m_fileManager(fileManager),
 		m_gameView(view),
 		m_player(player),
 		m_objects(gameObjects),
 		m_enemySpawner(enemySpawner),
-		m_world(world)
+		m_world(world)*/
 	{
 	}
 	virtual ~GameState()
@@ -36,12 +38,14 @@ public:
 protected:
 	Game*          const m_game;
 
-	FileManager* const m_fileManager;
+	SharedContext m_shared;
+
+	/*FileManager* const m_fileManager;
 
 	sf::View*      const m_gameView;
 	GameObjects*   const m_objects;
 	Player*        const m_player;
 	EnemySpawner*  const m_enemySpawner;
-	World*         const m_world;
+	World*         const m_world;*/
 };
 
