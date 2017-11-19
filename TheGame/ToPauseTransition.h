@@ -17,7 +17,14 @@ public:
 private:
 	sf::Time m_elapsedTime;
 
-	sf::RectangleShape* m_blackout;
+	sf::RenderTexture*  m_blurredScene;
+	sf::RenderTexture*  m_FBO_A;
+	sf::RenderTexture*  m_FBO_B;
+	sf::Sprite          m_blurSprite;
+	sf::Shader*         m_blurShader;
+	sf::Color           m_blurColor;
+	sf::RectangleShape* m_sceneBlackout;
+	sf::Text*           m_pauseText;
 
 	RenderButton* m_returnButton;
 	RenderButton* m_closeButton;

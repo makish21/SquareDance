@@ -30,13 +30,7 @@ void MainMenuState::draw(sf::RenderWindow& window)
 
 	window.setView(*m_shared.gameView);
 
-	//window.draw(*m_shared.world);
 	window.draw(*m_shared.player);
-
-	/*for (auto i = m_shared.objects->begin(); i != m_shared.objects->end(); i++)
-	{
-		window.draw(**i);
-	}*/
 }
 
 void MainMenuState::update(sf::Time elapsed)
@@ -73,3 +67,5 @@ void MainMenuState::handleInput(const sf::Event& event)
 		return;
 	}
 }
+
+

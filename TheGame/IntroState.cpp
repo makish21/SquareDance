@@ -7,7 +7,9 @@ IntroState::IntroState(Game * const game,
 	GameState(game,
 			  sharedContext),
 	m_loadDataThread(&IntroState::loadData, this),
-	m_textColor(sf::Color::Black)
+	m_textColor(sf::Color::Black),
+	m_introDuration(sf::seconds(MIN_INTRO_DURATION)),
+	m_dataLoaded(false)
 {
 	float characterSize = CHARACTER_SIZE_FACTOR * game->getBestVideoMode().height;
 	sf::FloatRect textRect;
@@ -62,17 +64,24 @@ void IntroState::update(sf::Time elapsed)
 {
 	m_elapsedTime += elapsed;
 
-	if (m_elapsedTime.asSeconds() > MIN_INTRO_DURATION)
+	if (m_elapsedTime > m_introDuration)
 	{
-		m_textColor = transfer(m_elapsedTime - sf::seconds(3.f),
-							   sf::seconds(1.f), sf::Color::Black,
-							   sf::Color(0, 0, 0, 0));
+		if (m_dataLoaded)
+		{
+			m_textColor = transfer(m_elapsedTime - m_introDuration,
+								   sf::seconds(1.f), sf::Color::Black,
+								   sf::Color(0, 0, 0, 0));
 
-		m_developerText.setFillColor(m_textColor);
-		m_developerNameText.setFillColor(m_textColor);
-		m_createdWithText.setFillColor(m_textColor);
+			m_developerText.setFillColor(m_textColor);
+			m_developerNameText.setFillColor(m_textColor);
+			m_createdWithText.setFillColor(m_textColor);
+		}
+		else
+		{
+			m_introDuration += sf::seconds(1.f);
+		}
 	}
-	if (m_elapsedTime.asSeconds() > 4.f)
+	if (m_elapsedTime > m_introDuration + sf::seconds(1.f))
 	{
 		m_game->changeState(new ToMenuTransition(m_game,
 												 m_shared));
@@ -99,4 +108,8 @@ void IntroState::loadData()
 	m_shared.fileManager->loadTexture("PauseIcon", "pause.png");
 	m_shared.fileManager->loadTexture("ResumeIcon", "return.png");
 	m_shared.fileManager->loadTexture("ExitIcon", "close.png");
+
+	m_shared.fileManager->loadShader("Blur", "Blur.frag", "Blur.vert");
+
+	m_dataLoaded = true;
 }

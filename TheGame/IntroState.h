@@ -19,8 +19,10 @@ public:
 private:
 	void loadData();
 	std::thread m_loadDataThread;
+	bool m_dataLoaded;
 
 	sf::Time m_elapsedTime;
+	sf::Time m_introDuration;
 
 	sf::Color m_textColor;
 

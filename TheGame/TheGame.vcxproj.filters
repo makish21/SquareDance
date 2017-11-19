@@ -255,6 +255,12 @@
     <None Include="RadialGradient.vert">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="Blur.frag">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="Blur.vert">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="HelveticaNeueCyr.otf">

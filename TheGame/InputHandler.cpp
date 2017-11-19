@@ -27,10 +27,16 @@ InputHandler::~InputHandler()
 
 Command * InputHandler::handleInput(const sf::Event& event)
 {
-	if (m_leftArea.contains(sf::Vector2i(event.touch.x, event.touch.y)) && event.touch.finger == 0)
+	if (m_leftArea.contains(sf::Vector2i(event.touch.x, event.touch.y))/* && event.touch.finger == 0*/)
 	{
 		if (event.type == sf::Event::TouchBegan && !isMovesLeft)
 		{
+			isMovesLeft = true;
+			return m_moveLeft;
+		}
+		if (event.type == sf::Event::TouchMoved && !isMovesLeft && isMovesRight)
+		{
+			isMovesRight = false;
 			isMovesLeft = true;
 			return m_moveLeft;
 		}
@@ -40,10 +46,16 @@ Command * InputHandler::handleInput(const sf::Event& event)
 			return m_stopMovingLeft;
 		}
 	}
-	if (m_rightArea.contains(sf::Vector2i(event.touch.x, event.touch.y)) && event.touch.finger == 0)
+	if (m_rightArea.contains(sf::Vector2i(event.touch.x, event.touch.y))/* && event.touch.finger == 0*/)
 	{
 		if (event.type == sf::Event::TouchBegan && !isMovesRight)
 		{
+			isMovesRight = true;
+			return m_moveRight;
+		}
+		if (event.type == sf::Event::TouchMoved && !isMovesRight && isMovesLeft)
+		{
+			isMovesLeft = false;
 			isMovesRight = true;
 			return m_moveRight;
 		}

@@ -61,3 +61,5 @@ void ToGameTransition::draw(sf::RenderWindow & window)
 	window.draw(*m_shared.world);
 	window.draw(*m_shared.player);
 }
+
+

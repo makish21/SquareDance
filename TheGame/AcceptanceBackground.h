@@ -21,8 +21,10 @@ public:
 	AcceptanceBackground(const sf::Vector2u& windowSize);
 	~AcceptanceBackground();
 
-	void update(sf::Time elapsed);
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void setColor(sf::Color color);
+
+	virtual void update(sf::Time elapsed);
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
 	virtual void onNotify(const GameEvent& event);

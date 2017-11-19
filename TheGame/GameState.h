@@ -6,25 +6,14 @@
 #include "EnemySpawner.h"
 #include "Definitions.hpp"
 
-class GameState
+class GameState : 
+	public Subject
 {
 public:
 	GameState(Game* const game,
-			  const SharedContext& sharedContext
-			  /*FileManager* const fileManager,
-			  sf::View* const view,
-			  Player* const player,
-			  EnemySpawner* const enemySpawner,
-			  GameObjects* const gameObjects,
-			  World* const world*/) :
+			  const SharedContext& sharedContext) :
 		m_game(game),
 		m_shared(sharedContext)
-		/*m_fileManager(fileManager),
-		m_gameView(view),
-		m_player(player),
-		m_objects(gameObjects),
-		m_enemySpawner(enemySpawner),
-		m_world(world)*/
 	{
 	}
 	virtual ~GameState()
@@ -36,16 +25,8 @@ public:
 	virtual void update(sf::Time elapsed) = 0;
 	virtual void draw(sf::RenderWindow& window) = 0;
 protected:
-	Game*          const m_game;
+	Game* const m_game;
 
 	SharedContext m_shared;
-
-	/*FileManager* const m_fileManager;
-
-	sf::View*      const m_gameView;
-	GameObjects*   const m_objects;
-	Player*        const m_player;
-	EnemySpawner*  const m_enemySpawner;
-	World*         const m_world;*/
 };
 

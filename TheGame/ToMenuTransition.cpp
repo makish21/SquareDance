@@ -69,6 +69,7 @@ void ToMenuTransition::update(sf::Time elapsed)
 											  m_shared));
 		return;
 	}
+
 }
 
 void ToMenuTransition::draw(sf::RenderWindow & window)
@@ -85,3 +86,4 @@ void ToMenuTransition::draw(sf::RenderWindow & window)
 		window.draw(**i);
 	}
 }
+

@@ -25,6 +25,15 @@ AcceptanceBackground::~AcceptanceBackground()
 {
 }
 
+void AcceptanceBackground::setColor(sf::Color color)
+{
+	m_color = color;
+
+	m_smallRect.setFillColor(color);
+	m_mediumRect.setFillColor(color);
+	m_largeRect.setFillColor(color);
+}
+
 void AcceptanceBackground::onNotify(const GameEvent & event)
 {
 	switch (event.type)

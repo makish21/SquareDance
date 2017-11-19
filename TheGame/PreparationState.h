@@ -13,6 +13,6 @@ public:
 	virtual void draw(sf::RenderWindow&);
 
 private:
-	sf::Time m_elapsed;
+	sf::Time m_elapsedTime;
 };
 

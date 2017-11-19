@@ -18,6 +18,13 @@ public:
 	}
 	virtual ~Background(){};
 
+	virtual void setColor(sf::Color color) = 0;
+
+	sf::Color getColor() const
+	{
+		return m_color;
+	}
+
 	virtual void update(sf::Time time) = 0;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 

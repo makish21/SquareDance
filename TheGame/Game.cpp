@@ -8,12 +8,13 @@ Game::Game() :
 #ifdef __ANDROID__
 	m_currentVideoMode(sf::VideoMode::getFullscreenModes()[0]),
 	m_settings(0, 0, 1),
+	m_window(m_currentVideoMode, "Game", sf::Style::Fullscreen, m_settings),
 #else
 	m_currentVideoMode(/*sf::VideoMode(320, 240)*/
 					   sf::VideoMode::getFullscreenModes()[4]),
 	m_settings(0, 0, 4),
-#endif
 	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
+#endif
 	m_background(new AcceptanceBackground(sf::Vector2u(m_currentVideoMode.width, m_currentVideoMode.height))),
 	m_viewZoom(INITIAL_VIEW_ZOOM),
 	m_world(this),
@@ -30,7 +31,8 @@ Game::Game() :
 	m_enemySpawner(&m_gameObjects)
 {
 #ifndef NDEBUG
-	m_window.setFramerateLimit(60);
+	m_window.setVerticalSyncEnabled(true);
+	//m_window.setFramerateLimit(60);
 #endif // DEBUG
 	m_window.setKeyRepeatEnabled(false);
 
@@ -163,6 +165,11 @@ float Game::getMusicVolume() const
 	return m_music.getVolume();
 }
 
+bool Game::hasFocus() const
+{
+	return m_window.hasFocus();
+}
+
 void Game::changeState(GameState* state)
 {
 	delete m_state;
@@ -173,23 +180,16 @@ void Game::gameLoop()
 {
 	while (m_window.isOpen())
 	{
-		if (m_window.hasFocus())
-		{
-			handleInput();
+		handleInput();
 
-			if (m_state == nullptr)
-			{
-				continue;
-			}
-
-			update();
-			render();
-			restartClock();
-		}
-		else
+		if (m_state == nullptr)
 		{
-			m_window.waitEvent(m_event);
+			continue;
 		}
+
+		update();
+		render();
+		restartClock();
 	}
 }
 
@@ -245,7 +245,20 @@ void Game::handleInput()
 		case sf::Event::Resized:
 			updateRender(m_event.size.width, m_event.size.height);
 			break;
-			
+
+		case sf::Event::LostFocus:
+			//sf::err() << "LostFocus\n";
+			m_window.setFramerateLimit(15);
+			m_window.setActive(false);
+			break;
+
+		case sf::Event::GainedFocus:
+			//sf::err() << "Focused\n";
+			//m_window.requestFocus();
+			m_window.setFramerateLimit(0);
+			m_window.setActive(true);
+			break;
+
 		default:
 			break;
 		}

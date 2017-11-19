@@ -255,6 +255,8 @@
     <Text Include="SpawnPresets.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Blur.frag" />
+    <None Include="Blur.vert" />
     <None Include="Courtesy.ogg" />
     <None Include="Otis.ogg" />
     <None Include="RadialGradient.frag" />

@@ -72,6 +72,8 @@ public:
 	void setMusicVolume(float volume);
 	float getMusicVolume() const;
 
+	bool hasFocus() const;
+
 	void changeState(GameState* state);
 	
 	void gameLoop();
@@ -113,7 +115,6 @@ private:
 	sf::Time    m_bestTime;
 	sf::Text    m_bestTimeText;
 	sf::Music   m_music;
-	sf::RectangleShape m_screenBlackout;
 
 	// State members
 	GameState* m_state;
@@ -129,6 +130,7 @@ private:
 	// Debug info
 #ifndef NDEBUG
 	DebugOverlay m_debugOverlay;
+	std::string  m_stateInfo;
 
 	sf::Clock m_titleClock;
 	unsigned int m_updatesCounter;

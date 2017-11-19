@@ -23,7 +23,7 @@ void DebugOverlay::setFont(const sf::Font * const font)
 	m_text.setFont(*font);
 	m_text.setCharacterSize(15);
 	m_text.setPosition(10.f, 10.f);
-	m_text.setFillColor(sf::Color::White);
+	m_text.setFillColor(sf::Color(128, 128, 128));
 }
 
 void DebugOverlay::update()
@@ -34,8 +34,6 @@ void DebugOverlay::update()
 	m_bitsPerPixel = "Bits per pixel: " + std::to_string(m_game->m_currentVideoMode.bitsPerPixel) + '\n';
 
 	m_antialiasingLevel = "Anti-aliasing: " + std::to_string(m_game->m_settings.antialiasingLevel) + "x\n";
-
-	//m_openGLVersion = "OpenGL: v" + std::string((char*)(glGetString(GL_VERSION))) + '\n';
 
 	m_shaders = std::string("Is shaders available: ") + (sf::Shader::isAvailable() ? "true" : "false") + '\n';
 #ifndef NDEBUG
@@ -54,7 +52,6 @@ void DebugOverlay::update()
 	m_text.setString(m_windowSize +
 					 m_bitsPerPixel +
 					 m_antialiasingLevel +
-					 m_openGLVersion +
 					 m_shaders +
 					 m_updatesCounter +
 					 m_framesCounter +

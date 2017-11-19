@@ -54,6 +54,12 @@ void GameProcessState::handleInput(const sf::Event &event)
 			return;
 		}
 	}
+	if (event.type == sf::Event::LostFocus)
+	{
+		m_game->changeState(new ToPauseTransition(m_game,
+												  m_shared));
+		return;
+	}
 }
 
 void GameProcessState::update(sf::Time elapsed)

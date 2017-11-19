@@ -33,11 +33,11 @@ void PreparationState::handleInput(const sf::Event & event)
 
 void PreparationState::update(sf::Time elapsed)
 {
-	m_elapsed += elapsed;
+	m_elapsedTime += elapsed;
 
-	if (m_elapsed.asSeconds() < PREPARING_DURATION)
+	if (m_elapsedTime.asSeconds() < PREPARING_DURATION)
 	{
-		float accelerationFactor = std::sin(m_elapsed.asSeconds() / PREPARING_DURATION * PI / 2.f) * 1.1874027f;
+		float accelerationFactor = std::sin(m_elapsedTime.asSeconds() / PREPARING_DURATION * PI / 2.f) * 1.1874027f;
 
 		m_shared.player->update(*m_shared.world, elapsed * accelerationFactor);
 
@@ -61,9 +61,18 @@ void PreparationState::update(sf::Time elapsed)
 	}
 	else
 	{
-		m_game->changeState(new GameProcessState(m_game,
-												 m_shared));
-		return;
+		if (m_game->hasFocus())
+		{
+			m_game->changeState(new GameProcessState(m_game,
+													 m_shared));
+			return;
+		}
+		else
+		{
+			m_game->changeState(new ToPauseTransition(m_game,
+													  m_shared));
+			return;
+		}
 	}
 }
 
@@ -81,3 +90,4 @@ void PreparationState::draw(sf::RenderWindow & window)
 		window.draw(**i);
 	}
 }
+

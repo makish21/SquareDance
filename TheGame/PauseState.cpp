@@ -4,28 +4,40 @@
 
 PauseState::PauseState(Game * const game,
 					   const SharedContext& sharedContext,
+					   sf::RenderTexture*  blurredScene,
+					   sf::RenderTexture*  FBO_A,
+					   sf::RenderTexture*  FBO_B,
 					   sf::RectangleShape* blackout,
+					   sf::Text*     pauseText,
 					   RenderButton* returnButton,
 					   RenderButton* closeButton) :
 	GameState(game,
 			  sharedContext),
-	m_blackout(blackout),
 	m_returnButton(returnButton),
-	m_closeButton(closeButton)
+	m_closeButton(closeButton),
+	m_blurredScene(blurredScene),
+	m_FBO_A(FBO_A),
+	m_FBO_B(FBO_B),
+	m_sceneBlackout(blackout),
+	m_blurShader(sharedContext.fileManager->getShader("Blur")),
+	m_pauseText(pauseText)
 {
-	m_blackout->setFillColor(sf::Color(0, 0, 0, 128));
-
 	m_returnButton->setRect(sf::FloatRect(game->getCurrentVideoMode().width - 250,
 										  game->getCurrentVideoMode().height - 150,
 										  100, 100));
 
 	m_closeButton->setRect(sf::FloatRect(150, game->getCurrentVideoMode().height - 150,
 										 100, 100));
+	
+	m_pauseText->setFillColor(MENU_TITLE_COLOR);
 }
 
 PauseState::~PauseState()
 {
-	delete m_blackout;
+	delete m_blurredScene;
+	delete m_FBO_A;
+	delete m_FBO_B;
+	delete m_sceneBlackout;
 	delete m_returnButton;
 	delete m_closeButton;
 }
@@ -63,24 +75,49 @@ void PauseState::update(sf::Time elapsed)
 
 void PauseState::draw(sf::RenderWindow & window)
 {
-	window.draw(*m_shared.background);
-
-	window.setView(*m_shared.gameView);
-
-	window.draw(*m_shared.world);
-
+	//----------------Draw scene to texture---------------------
+	m_blurredScene->clear();
+	m_blurredScene->setView(window.getDefaultView());
+	m_blurredScene->draw(*m_shared.background);
+	m_blurredScene->setView(*m_shared.gameView);
+	m_blurredScene->draw(*m_shared.world);
 	for (auto i = m_shared.objects->begin(); i != m_shared.objects->end(); i++)
 	{
-		window.draw(**i);
+		m_blurredScene->draw(**i);
 	}
+	m_blurredScene->setView(window.getDefaultView());
+	m_blurredScene->draw(*m_sceneBlackout);
+	m_blurredScene->display();
+
+	//---------------------Blurring scene-----------------------
+	m_blurSprite.setTexture(m_blurredScene->getTexture());
+	m_blurShader->setUniform("texture", m_blurredScene->getTexture());
+	m_blurShader->setUniform("direction", sf::Glsl::Vec2(1.f, 0.f));
+
+	m_FBO_A->clear();
+	m_FBO_A->draw(m_blurSprite, m_blurShader);
+	m_FBO_A->display();
+
+	m_blurSprite.setTexture(m_FBO_A->getTexture());
+	m_blurShader->setUniform("texture", m_FBO_A->getTexture());
+	m_blurShader->setUniform("direction", sf::Glsl::Vec2(0.f, 1.f));
+
+	m_FBO_B->clear();
+	m_FBO_B->draw(m_blurSprite, m_blurShader);
+	m_FBO_B->display();
+
+	//----------Draw blurred scene and other stuff---------------
+	m_blurSprite.setTexture(m_FBO_B->getTexture());
+	m_blurSprite.setScale(1.f / PAUSE_BLUR_FACTOR, 1.f / PAUSE_BLUR_FACTOR);
 
 	window.setView(window.getDefaultView());
-	window.draw(*m_blackout);
-
+	window.draw(m_blurSprite);
 	window.setView(*m_shared.gameView);
 	window.draw(*m_shared.player);
 
 	window.setView(window.getDefaultView());
 	window.draw(*m_returnButton);
 	window.draw(*m_closeButton);
+	window.draw(*m_pauseText);
 }
+
