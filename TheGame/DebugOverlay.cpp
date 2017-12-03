@@ -47,7 +47,7 @@ void DebugOverlay::update()
 	m_viewSize = "View size: x: " + std::to_string(static_cast<int>(m_game->m_view.getSize().x)) +
 		" y: " + std::to_string(static_cast<int>(m_game->m_view.getSize().y)) + '\n';
 
-	m_titleAlpha = "Title alpha: " + std::to_string(m_game->m_titleColor.a) + '\n';
+	//m_titleAlpha = "Title alpha: " + std::to_string(m_game->m_titleColor.a) + '\n';
 
 	m_text.setString(m_windowSize +
 					 m_bitsPerPixel +
@@ -56,8 +56,7 @@ void DebugOverlay::update()
 					 m_updatesCounter +
 					 m_framesCounter +
 					 m_playerPos +
-					 m_viewSize +
-					 m_titleAlpha);
+					 m_viewSize);
 }
 
 void DebugOverlay::draw(sf::RenderTarget & target, sf::RenderStates states) const

@@ -19,22 +19,27 @@ class GameProcessState :
 {
 public:
 	GameProcessState(Game* const game,
-					 const SharedContext& sharedContext);
+					 const SharedContext& sharedContext,
+					 sf::Time* const currentTime,
+					 sf::Text* const stopwatch);
 	~GameProcessState();
+
+	virtual void clear();
 
 	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
 	virtual void draw(sf::RenderWindow&);
 
 private:
-	std::string getElapsedString(sf::Int32 milliseconds);
-
-	sf::Text m_stopwatchText;
 	sf::Texture m_texture;
 	RenderButton m_pauseButton;
 
-	//sf::Clock m_sessionClock;
-	sf::Time m_sessionTime;
+	sf::Text* const m_stopwatchText;
+	sf::Time* const m_currentTime;
 	float m_speedFactor;
+
+	sf::RenderTexture* const m_effect;
+	sf::Time* const m_effectTime;
+	sf::Sprite m_sprite;
 };
 

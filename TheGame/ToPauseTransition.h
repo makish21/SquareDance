@@ -7,8 +7,12 @@ class ToPauseTransition :
 {
 public:
 	ToPauseTransition(Game* const game,
-					  const SharedContext& sharedContext);
+					  const SharedContext& sharedContext,
+					  sf::Time* const currentTime,
+					  sf::Text* const stopwatch);
 	~ToPauseTransition();
+
+	virtual void clear();
 
 	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
@@ -28,5 +32,8 @@ private:
 
 	RenderButton* m_returnButton;
 	RenderButton* m_closeButton;
+
+	sf::Time* const m_currentTime;
+	sf::Text* const m_stopwatchText;
 };
 

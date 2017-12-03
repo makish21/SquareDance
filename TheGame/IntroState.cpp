@@ -56,6 +56,10 @@ IntroState::~IntroState()
 {
 }
 
+void IntroState::clear()
+{
+}
+
 void IntroState::handleInput(const sf::Event & event)
 {
 }
@@ -84,7 +88,9 @@ void IntroState::update(sf::Time elapsed)
 	if (m_elapsedTime > m_introDuration + sf::seconds(1.f))
 	{
 		m_game->changeState(new ToMenuTransition(m_game,
-												 m_shared));
+												 m_shared,
+												 nullptr,
+												 nullptr));
 	}
 }
 
@@ -110,6 +116,8 @@ void IntroState::loadData()
 	m_shared.fileManager->loadTexture("ExitIcon", "close.png");
 
 	m_shared.fileManager->loadShader("Blur", "Blur.frag", "Blur.vert");
+
+	*m_shared.bestTime = m_shared.fileManager->loadHighScore();
 
 	m_dataLoaded = true;
 }

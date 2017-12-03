@@ -30,6 +30,9 @@ public:
 	sf::Shader*      getShader(const std::string& shaderName) const;
 	SpawnPresets*    getSpawnPresets() const;
 
+	sf::Time loadHighScore() const;
+	void saveHighScore(sf::Time score) const;
+
 private:
 	std::unordered_map<std::string, sf::Font*> m_fonts;
 	std::unordered_map<std::string, sf::Texture*> m_textures;

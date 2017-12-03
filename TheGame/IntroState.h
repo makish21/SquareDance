@@ -12,6 +12,8 @@ public:
 			   const SharedContext& sharedContext);
 	~IntroState();
 
+	virtual void clear();
+
 	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
 	virtual void draw(sf::RenderWindow& window);

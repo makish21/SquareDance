@@ -1,6 +1,5 @@
 #include "FileManager.h"
-
-
+#include "CrossPlatform.hpp"
 
 FileManager::FileManager()
 {
@@ -120,7 +119,7 @@ sf::Font * FileManager::getFont(const std::string & fontName) const
 {
 	auto it = m_fonts.find(fontName);
 
-	return it != m_fonts.end() ? it->second : nullptr;	
+	return it != m_fonts.end() ? it->second : nullptr;
 }
 
 sf::Texture * FileManager::getTexture(const std::string & textureName) const
@@ -147,4 +146,18 @@ sf::Shader * FileManager::getShader(const std::string & shaderName) const
 SpawnPresets * FileManager::getSpawnPresets() const
 {
 	return m_spawnPresets;
+}
+
+sf::Time FileManager::loadHighScore() const
+{
+	sf::Time time;
+	sys::loadHighScore(time);
+	return time;
+}
+
+void FileManager::saveHighScore(sf::Time score) const
+{
+	std::thread thread(sys::saveHighScore, score);
+	thread.detach();
+	//sys::saveHighScore(score);
 }

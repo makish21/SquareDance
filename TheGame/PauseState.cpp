@@ -1,9 +1,12 @@
 #include "PauseState.h"
 #include "PreparationState.h"
 #include "MainMenuState.h"
+#include "ResumeState.h"
 
 PauseState::PauseState(Game * const game,
 					   const SharedContext& sharedContext,
+					   sf::Time* const currentTime,
+					   sf::Text* const stopwatch,
 					   sf::RenderTexture*  blurredScene,
 					   sf::RenderTexture*  FBO_A,
 					   sf::RenderTexture*  FBO_B,
@@ -20,7 +23,9 @@ PauseState::PauseState(Game * const game,
 	m_FBO_B(FBO_B),
 	m_sceneBlackout(blackout),
 	m_blurShader(sharedContext.fileManager->getShader("Blur")),
-	m_pauseText(pauseText)
+	m_pauseText(pauseText),
+	m_currentTime(currentTime),
+	m_stopwatchText(stopwatch)
 {
 	m_returnButton->setRect(sf::FloatRect(game->getCurrentVideoMode().width - 250,
 										  game->getCurrentVideoMode().height - 150,
@@ -28,18 +33,31 @@ PauseState::PauseState(Game * const game,
 
 	m_closeButton->setRect(sf::FloatRect(150, game->getCurrentVideoMode().height - 150,
 										 100, 100));
-	
+
 	m_pauseText->setFillColor(MENU_TITLE_COLOR);
+
+	if (*currentTime > *m_shared.bestTime)
+	{
+		m_shared.fileManager->saveHighScore(*currentTime);
+		*m_shared.bestTime = *currentTime;
+	}
 }
 
 PauseState::~PauseState()
+{
+}
+
+void PauseState::clear()
 {
 	delete m_blurredScene;
 	delete m_FBO_A;
 	delete m_FBO_B;
 	delete m_sceneBlackout;
+	delete m_pauseText;
 	delete m_returnButton;
 	delete m_closeButton;
+	delete m_currentTime;
+	delete m_stopwatchText;
 }
 
 void PauseState::handleInput(const sf::Event & event)
@@ -57,14 +75,42 @@ void PauseState::handleInput(const sf::Event & event)
 
 	if (m_returnButton->isReleased(event, position))
 	{
-		m_game->changeState(new PreparationState(m_game,
-												 m_shared));
+		m_game->changeState(new ResumeState(m_game,
+											m_shared,
+											m_currentTime,
+											m_stopwatchText,
+											m_blurredScene,
+											m_FBO_A,
+											m_FBO_B,
+											m_sceneBlackout,
+											m_pauseText,
+											m_returnButton,
+											m_closeButton,
+											new PreparationState(m_game,
+																 m_shared,
+																 m_currentTime,
+																 m_stopwatchText)));
+
+
 		return;
 	}
 	if (m_closeButton->isReleased(event, position))
 	{
-		m_game->changeState(new ToMenuTransition(m_game,
-												 m_shared));
+		m_game->changeState(new ResumeState(m_game,
+											m_shared,
+											m_currentTime,
+											m_stopwatchText,
+											m_blurredScene,
+											m_FBO_A,
+											m_FBO_B,
+											m_sceneBlackout,
+											m_pauseText,
+											m_returnButton,
+											m_closeButton,
+											new ToMenuTransition(m_game,
+																 m_shared,
+																 m_currentTime,
+																 m_stopwatchText)));
 		return;
 	}
 }
@@ -118,6 +164,7 @@ void PauseState::draw(sf::RenderWindow & window)
 	window.setView(window.getDefaultView());
 	window.draw(*m_returnButton);
 	window.draw(*m_closeButton);
+	window.draw(*m_stopwatchText);
 	window.draw(*m_pauseText);
 }
 

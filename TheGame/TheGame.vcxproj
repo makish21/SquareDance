@@ -204,6 +204,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PreparationState.cpp" />
     <ClCompile Include="RenderButton.cpp" />
+    <ClCompile Include="ResumeState.cpp" />
     <ClCompile Include="RevivalState.cpp" />
     <ClCompile Include="RoundedRectangleShape.cpp" />
     <ClCompile Include="SpawnPresets.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Commands.hpp" />
     <ClInclude Include="Controllable.hpp" />
     <ClInclude Include="Android.hpp" />
+    <ClInclude Include="CrossPlatform.hpp" />
     <ClInclude Include="DebugOverlay.h" />
     <ClInclude Include="DefaultEnemy.h" />
     <ClInclude Include="Definitions.hpp" />
@@ -228,6 +230,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="Functions.hpp" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameProcessState.h" />
     <ClInclude Include="InputHandler.h" />
@@ -240,6 +243,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PreparationState.h" />
     <ClInclude Include="RenderButton.h" />
+    <ClInclude Include="ResumeState.h" />
     <ClInclude Include="RevivalState.h" />
     <ClInclude Include="RoundedRectangleShape.h" />
     <ClInclude Include="GameState.h" />
@@ -249,6 +253,7 @@
     <ClInclude Include="ToMenuTransition.h" />
     <ClInclude Include="ToPauseTransition.h" />
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Windows.hpp" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +266,7 @@
     <None Include="Otis.ogg" />
     <None Include="RadialGradient.frag" />
     <None Include="RadialGradient.vert" />
+    <None Include="score.sds" />
     <None Include="Space.ogg" />
   </ItemGroup>
   <ItemGroup>

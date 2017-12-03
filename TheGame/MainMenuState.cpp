@@ -2,15 +2,23 @@
 #include "Definitions.hpp"
 
 MainMenuState::MainMenuState(Game* const game,
-							 const SharedContext& sharedContext) :
+							 const SharedContext& sharedContext,
+							 sf::Text* const title,
+							 sf::Text* const bestTime,
+							 sf::Text* const highScore) :
 	GameState(game,
-			  sharedContext)
+			  sharedContext),
+	m_titleText(title),
+	m_bestTimeText(bestTime),
+	m_highScoreText(highScore)
 {
 	game->setViewZoom(MENU_VIEW_ZOOM);
 	sharedContext.player->setScale(1.f, 1.f);
 	sharedContext.player->setPosition(MENU_PLAYER_POSITION);
 	sharedContext.world->setBoundsColor(MENU_WORLD_COLOR);
-	game->setTitleColor(MENU_TITLE_COLOR);
+	m_titleText->setFillColor(MENU_TITLE_COLOR);
+	m_bestTimeText->setFillColor(BEST_TIME_COLOR);
+	m_highScoreText->setFillColor(STOPWATCH_COLOR);
 
 	sf::FloatRect buttonRect;
 	buttonRect.left = sharedContext.player->getPosition().x - PLAYER_RADIUS;
@@ -24,6 +32,13 @@ MainMenuState::~MainMenuState()
 {
 }
 
+void MainMenuState::clear()
+{
+	delete m_titleText;
+	delete m_bestTimeText;
+	delete m_highScoreText;
+}
+
 void MainMenuState::draw(sf::RenderWindow& window)
 {
 	window.draw(*m_shared.background);
@@ -31,6 +46,11 @@ void MainMenuState::draw(sf::RenderWindow& window)
 	window.setView(*m_shared.gameView);
 
 	window.draw(*m_shared.player);
+
+	window.setView(window.getDefaultView());
+	window.draw(*m_bestTimeText);
+	window.draw(*m_highScoreText);
+	window.draw(*m_titleText);
 }
 
 void MainMenuState::update(sf::Time elapsed)
@@ -63,7 +83,10 @@ void MainMenuState::handleInput(const sf::Event& event)
 	if (m_playButton.isReleased(event, m_game->mapPixelToCoords(position, *m_shared.gameView)))
 	{
 		m_game->changeState(new ToGameTransition(m_game,
-												 m_shared));
+												 m_shared,
+												 m_titleText,
+												 m_bestTimeText,
+												 m_highScoreText));
 		return;
 	}
 }

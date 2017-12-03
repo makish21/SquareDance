@@ -9,7 +9,9 @@ class World :
 {
 public:
 	World(Game* game);
-	//World(sf::FloatRect window);
+
+	sf::FloatRect getTopBoundRect() const;
+	sf::FloatRect getBottomBoundRect() const;
 
 	sf::FloatRect getBounds() const;
 	sf::Vector2<float> getCenter();
@@ -28,6 +30,8 @@ private:
 	Game* m_game;
 
 	const sf::FloatRect c_bounds;
+	sf::FloatRect m_topBounds;
+	sf::FloatRect m_bottomBounds;
 
 	sf::VertexArray m_topBorder;
 	sf::VertexArray m_bottomBorder;

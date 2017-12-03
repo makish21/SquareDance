@@ -12,6 +12,7 @@
 #define WORLD_SIZE sf::Vector2f(800, 280)
 
 #define PLAYER_RADIUS 14.1421356f
+#define PLAYER_COLOR sf::Color(215, 255, 255)
 
 #define INITIAL_VIEW_ZOOM 0.02f
 #define MENU_VIEW_ZOOM 0.5f
@@ -31,10 +32,14 @@
 #define MENU_TITLE_COLOR sf::Color(242, 227, 160, 255)
 #define GAME_TITLE_COLOR sf::Color(242, 227, 160, 0)
 
+#define STOPWATCH_COLOR sf::Color(215, 255, 255, 255)
+#define BEST_TIME_COLOR sf::Color(180, 180, 255, 255)
+
 #define MIN_INTRO_DURATION 3.f
 #define TO_MENU_TRANSITION_DURATION 2.f
 #define TO_GAME_TRANSITION_DURATION 2.f
 #define TO_PAUSE_TRANSITION_DURATION 0.3f
+#define RESUME_DURATION 0.1f
 #define PREPARING_DURATION 0.85f
 #define PLAYER_REVIVAL_DURATION 2.2f
 
@@ -45,7 +50,7 @@
 
 // Math
 #define PI 3.141592653f
-
+#define E 2.718281828f
 
 #define CHARACTER_SIZE_FACTOR (1.f / 480.f)
 #define TITLE_CHARACTER_SIZE 61.f
@@ -63,3 +68,4 @@
 
 // Containers
 using GameObjects = std::list<Object*>;
+

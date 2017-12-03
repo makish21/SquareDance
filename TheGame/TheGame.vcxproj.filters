@@ -123,8 +123,11 @@
     <ClCompile Include="Subject.cpp">
       <Filter>Game\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="ResumeState.cpp">
+      <Filter>Game\States</Filter>
+    </ClCompile>
     <ClCompile Include="Animations.cpp">
-      <Filter>Game\States\Transitions</Filter>
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,8 +233,20 @@
     <ClInclude Include="Observer.hpp">
       <Filter>Game\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="ResumeState.h">
+      <Filter>Game\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
     <ClInclude Include="Animations.h">
-      <Filter>Game\States\Transitions</Filter>
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossPlatform.hpp">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Windows.hpp">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +274,9 @@
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="Blur.vert">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="score.sds">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

@@ -34,3 +34,9 @@ sf::Color transfer(sf::Time elapsed, sf::Time duration, sf::Color oldVal, sf::Co
 
 	return color;
 }
+
+float pulse(sf::Time time, sf::Time duration, float average, float spreading)
+{
+	float ratio = time / duration * 8.f;
+	return std::pow(E, (-0.3f * ratio * 2.f)) * sin(ratio * 1.5f) * 1.7f * spreading + average;
+}

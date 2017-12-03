@@ -32,6 +32,7 @@ private:
 	bool     m_inAction;
 	Action   m_action;
 	sf::Time m_actionTime;
+	sf::Time m_pulseTime;
 
 	sf::Clock m_clock;
 

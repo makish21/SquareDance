@@ -26,14 +26,16 @@ struct SharedContext
 				  EnemySpawner* const es,
 				  Player*       const p,
 				  World*        const w,
-				  Background*   const b) :
+				  Background*   const b,
+				  sf::Time*     const bt) :
 		fileManager(fm),
 		gameView(gv),
 		objects(go),
 		enemySpawner(es),
 		player(p),
 		world(w),
-		background(b)
+		background(b),
+		bestTime(bt)
 	{
 	};
 
@@ -44,6 +46,8 @@ struct SharedContext
 	Player*        const player;
 	World*         const world;
 	Background*    const background;
+
+	sf::Time*      const bestTime;
 };
 
 class Game
@@ -60,9 +64,6 @@ public:
 	float getViewZoom() const;
 
 	void setViewZoom(float newZoom);
-
-	sf::Color getTitleColor() const;
-	void setTitleColor(sf::Color color);
 
 	sf::Vector2i mapCoordsToPixel(const sf::Vector2f& point) const;
 	sf::Vector2i mapCoordsToPixel(const sf::Vector2f& point, const sf::View& view) const;
@@ -108,12 +109,7 @@ private:
 	World       m_world;
 	Player      m_player;
 	GameObjects m_gameObjects;
-	sf::Color   m_titleColor;
-	sf::Text    m_titleText;
-	sf::Time    m_currentGameTime;
-	sf::Text    m_currentGameTimeText;
 	sf::Time    m_bestTime;
-	sf::Text    m_bestTimeText;
 	sf::Music   m_music;
 
 	// State members

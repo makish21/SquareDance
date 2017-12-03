@@ -4,7 +4,9 @@
 #include "Definitions.hpp"
 
 ToPauseTransition::ToPauseTransition(Game* const game,
-									 const SharedContext& sharedContext) :
+									 const SharedContext& sharedContext,
+									 sf::Time* const currentTime,
+									 sf::Text* const stopwatch) :
 	GameState(game,
 			  sharedContext),
 	m_returnButton(new RenderButton(sf::FloatRect(game->getCurrentVideoMode().width - 250,
@@ -18,7 +20,9 @@ ToPauseTransition::ToPauseTransition(Game* const game,
 	m_pauseText(new sf::Text("Pause", *sharedContext.fileManager->getFont("Helvetica"))),
 	m_blurredScene(new sf::RenderTexture),
 	m_FBO_A(new sf::RenderTexture),
-	m_FBO_B(new sf::RenderTexture)
+	m_FBO_B(new sf::RenderTexture),
+	m_currentTime(currentTime),
+	m_stopwatchText(stopwatch)
 {
 	m_returnButton->setTexture(*sharedContext.fileManager->getTexture("ResumeIcon"));
 	m_returnButton->setAlignment(Center, Center);
@@ -78,6 +82,19 @@ ToPauseTransition::~ToPauseTransition()
 {
 }
 
+void ToPauseTransition::clear()
+{
+	delete m_blurredScene;
+	delete m_FBO_A;
+	delete m_FBO_B;
+	delete m_sceneBlackout;
+	delete m_pauseText;
+	delete m_returnButton;
+	delete m_closeButton;
+	delete m_currentTime;
+	delete m_stopwatchText;
+}
+
 void ToPauseTransition::handleInput(const sf::Event & event)
 {
 }
@@ -128,6 +145,8 @@ void ToPauseTransition::update(sf::Time elapsed)
 	{
 		m_game->changeState(new PauseState(m_game,
 										   m_shared,
+										   m_currentTime,
+										   m_stopwatchText,
 										   m_blurredScene,
 										   m_FBO_A,
 										   m_FBO_B,
@@ -196,6 +215,7 @@ void ToPauseTransition::draw(sf::RenderWindow & window)
 	window.setView(window.getDefaultView());
 	window.draw(*m_returnButton);
 	window.draw(*m_closeButton);
+	window.draw(*m_stopwatchText);
 	window.draw(*m_pauseText);
 }
 

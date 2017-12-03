@@ -1,4 +1,5 @@
 #include <complex>
+#include "Animations.h"
 #include "AcceptanceBackground.h"
 
 AcceptanceBackground::AcceptanceBackground(const sf::Vector2u & windowSize) :
@@ -15,6 +16,10 @@ AcceptanceBackground::AcceptanceBackground(const sf::Vector2u & windowSize) :
 	m_smallRect.setOrigin(m_smallRect.getSize() / 2.f);
 	m_mediumRect.setOrigin(m_mediumRect.getSize() / 2.f);
 	m_largeRect.setOrigin(m_largeRect.getSize() / 2.f);
+
+	m_smallRect.setScale(0.9f, 0.9f);
+	m_mediumRect.setScale(0.9f, 0.9f);
+	m_largeRect.setScale(0.9f, 0.9f);
 
 	m_smallRect.setFillColor(m_color);
 	m_mediumRect.setFillColor(m_color);
@@ -39,6 +44,9 @@ void AcceptanceBackground::onNotify(const GameEvent & event)
 	switch (event.type)
 	{
 	case GameEvent::PlayerBounced:
+		m_pulseTime = sf::Time::Zero;
+
+		m_actionTime = sf::Time::Zero;
 		m_inAction = true;
 
 		// Next action
@@ -52,15 +60,11 @@ void AcceptanceBackground::onNotify(const GameEvent & event)
 
 void AcceptanceBackground::update(sf::Time elapsed)
 {
-	float elapsedTime = m_clock.getElapsedTime().asSeconds();
-
 	rotate(elapsed.asSeconds() * 10.f);
 
-	/*float transformScaleFactor = std::sin(elapsedTime * PI) * 0.1f + 0.9f;
+	m_pulseTime += elapsed;
 
-	setScale(transformScaleFactor, transformScaleFactor);*/
-
-	float rectScaleFactor = std::sin(elapsedTime * PI * 1.f) * 0.1f + 0.9f;
+	float rectScaleFactor = pulse(m_pulseTime, sf::seconds(1.9f), 0.85f, 0.15f);
 
 	m_smallRect.setScale(rectScaleFactor, rectScaleFactor);
 	m_mediumRect.setScale(rectScaleFactor, rectScaleFactor);

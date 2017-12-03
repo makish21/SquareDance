@@ -19,6 +19,16 @@ World::World(Game * game) :
 	}
 }
 
+sf::FloatRect World::getTopBoundRect() const
+{
+	return m_topBounds;
+}
+
+sf::FloatRect World::getBottomBoundRect() const
+{
+	return m_bottomBounds;
+}
+
 void World::updateBounds(const sf::FloatRect & view)
 {
 	m_topBorder[0].position = sf::Vector2f(view.left, view.top);
@@ -26,10 +36,20 @@ void World::updateBounds(const sf::FloatRect & view)
 	m_topBorder[2].position = sf::Vector2f(view.left + view.width, c_bounds.top);
 	m_topBorder[3].position = sf::Vector2f(c_bounds.left, c_bounds.top);
 
+	m_topBounds.left   = m_topBorder[0].position.x;
+	m_topBounds.top    = m_topBorder[0].position.y;
+	m_topBounds.width  = m_topBorder[2].position.x - m_topBorder[0].position.x;
+	m_topBounds.height = m_topBorder[2].position.y - m_topBorder[0].position.y;
+
 	m_bottomBorder[0].position = sf::Vector2f(c_bounds.left, c_bounds.top + c_bounds.height);
 	m_bottomBorder[1].position = sf::Vector2f(c_bounds.left + c_bounds.width, c_bounds.top + c_bounds.height);
 	m_bottomBorder[2].position = sf::Vector2f(view.left + view.width, view.top + view.height);
 	m_bottomBorder[3].position = sf::Vector2f(view.left, view.top + view.height);
+
+	m_bottomBounds.left   = m_bottomBorder[0].position.x;
+	m_bottomBounds.top    = m_bottomBorder[0].position.y;
+	m_bottomBounds.width  = m_bottomBorder[3].position.x - m_bottomBorder[0].position.x;
+	m_bottomBounds.height = m_bottomBorder[3].position.y - m_bottomBorder[0].position.y;
 
 	m_lines[0] = sf::Vector2f(c_bounds.left, c_bounds.top);
 	m_lines[1] = sf::Vector2f(view.left + view.width, c_bounds.top);

@@ -10,16 +10,19 @@ Game::Game() :
 	m_settings(0, 0, 1),
 	m_window(m_currentVideoMode, "Game", sf::Style::Fullscreen, m_settings),
 #else
-	m_currentVideoMode(/*sf::VideoMode(320, 240)*/
+	m_currentVideoMode(//sf::VideoMode(1302, 600) // <- iPhone X 2.17:1
+					   //sf::VideoMode(1200, 600) // <- 18:9
+					   //sf::VideoMode(1067, 600) // <- 16:9
+					   //sf::VideoMode(750, 600) // <- 5:4
+					   //sf::VideoMode(1024, 768) // <- 4:3
 					   sf::VideoMode::getFullscreenModes()[4]),
 	m_settings(0, 0, 4),
-	m_window(m_currentVideoMode, "Game", sf::Style::Default, m_settings),
+	m_window(m_currentVideoMode, "Game", sf::Style::None, m_settings),
 #endif
 	m_background(new AcceptanceBackground(sf::Vector2u(m_currentVideoMode.width, m_currentVideoMode.height))),
 	m_viewZoom(INITIAL_VIEW_ZOOM),
 	m_world(this),
 	m_player(VIEW_CENTER.x, VIEW_CENTER.y, 20, 20),
-	m_titleColor(INITIAL_TITLE_COLOR),
 	m_playerInputHandler(sf::IntRect(0, 0,
 									 m_window.getSize().x / 2,
 									 m_window.getSize().y),
@@ -32,7 +35,6 @@ Game::Game() :
 {
 #ifndef NDEBUG
 	m_window.setVerticalSyncEnabled(true);
-	//m_window.setFramerateLimit(60);
 #endif // DEBUG
 	m_window.setKeyRepeatEnabled(false);
 
@@ -59,19 +61,6 @@ Game::Game() :
 	m_music.setVolume(50.f);
 	m_music.play();
 
-	m_titleText.setFont(*m_fileManager.getFont("Helvetica"));
-	m_titleText.setString(GAME_NAME);
-	m_titleText.setCharacterSize(static_cast<unsigned int>(CHARACTER_SIZE_FACTOR * TITLE_CHARACTER_SIZE * m_bestVideoMode.height));
-	sf::FloatRect textRect = m_titleText.getLocalBounds();
-	m_titleText.setOrigin(textRect.left + textRect.width / 2,
-						  textRect.top + textRect.height / 2);
-	m_titleText.setScale(float(m_currentVideoMode.width) / float(m_bestVideoMode.width),
-						 float(m_currentVideoMode.width) / float(m_bestVideoMode.width));
-	m_titleText.setPosition(static_cast<float>(m_currentVideoMode.width) / 2,
-							TITLE_Y_POSITION_FACTOR *
-							static_cast<float>(m_currentVideoMode.height));
-	m_titleText.setFillColor(m_titleColor);
-
 	m_clock.restart();
 
 	m_player.addObserver(m_background);
@@ -82,7 +71,8 @@ Game::Game() :
 						  &m_enemySpawner,
 						  &m_player,
 						  &m_world,
-						  m_background);
+						  m_background,
+						  &m_bestTime);
 
 	m_state = new IntroState(this, context);
 
@@ -122,17 +112,6 @@ void Game::setViewZoom(float newZoom)
 	m_viewZoom = newZoom;
 
 	m_view.setSize(m_defaultViewSize * newZoom);
-}
-
-sf::Color Game::getTitleColor() const
-{
-	return m_titleColor;
-}
-
-void Game::setTitleColor(sf::Color color)
-{
-	m_titleColor = color;
-	m_titleText.setFillColor(m_titleColor);
 }
 
 sf::Vector2i Game::mapCoordsToPixel(const sf::Vector2f & point) const
@@ -195,9 +174,18 @@ void Game::gameLoop()
 
 void Game::close()
 {
+	// Delete current background
+	delete m_background;
+	m_background = nullptr;
+
+	// Deallocate current state memory
+	m_state->clear();
+
+	// Delete current state
 	delete m_state;
 	m_state = nullptr;
 
+	// Close app
 	m_window.close();
 }
 
@@ -213,10 +201,7 @@ void Game::updateRender(unsigned int width, unsigned int height, unsigned int bi
 	m_defaultViewSize = sf::Vector2f(WORLD_SIZE.x, WORLD_SIZE.x / m_aspectRatio);
 	m_view.setSize(m_defaultViewSize * m_viewZoom);
 	m_view.setCenter(VIEW_CENTER);
-
-	m_titleText.setScale(float(m_currentVideoMode.width) / float(m_bestVideoMode.width),
-						 float(m_currentVideoMode.width) / float(m_bestVideoMode.width));
-
+	
 	m_world.updateBounds(sf::FloatRect(VIEW_CENTER.x - m_defaultViewSize.x / 2,
 									   VIEW_CENTER.y - m_defaultViewSize.y / 2,
 									   m_defaultViewSize.x,
@@ -247,14 +232,11 @@ void Game::handleInput()
 			break;
 
 		case sf::Event::LostFocus:
-			//sf::err() << "LostFocus\n";
-			m_window.setFramerateLimit(15);
+			m_window.setFramerateLimit(10);
 			m_window.setActive(false);
 			break;
 
 		case sf::Event::GainedFocus:
-			//sf::err() << "Focused\n";
-			//m_window.requestFocus();
 			m_window.setFramerateLimit(0);
 			m_window.setActive(true);
 			break;
@@ -322,8 +304,6 @@ void Game::render()
 	m_state->draw(m_window);
 
 	m_window.setView(m_window.getDefaultView());
-
-	m_window.draw(m_titleText);
 
 #ifndef NDEBUG
 	m_window.draw(m_debugOverlay);

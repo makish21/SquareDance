@@ -7,9 +7,13 @@ class ToMenuTransition :
 {
 public:
 	ToMenuTransition(Game* const game,
-					 const SharedContext& sharedContext);
+					 const SharedContext& sharedContext,
+					 sf::Time* const currentTime,
+					 sf::Text* const stopwatch);
 
 	~ToMenuTransition();
+
+	virtual void clear();
 
 	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
@@ -17,6 +21,14 @@ public:
 
 private:
 	sf::Time m_elapsedTime;
+
+	sf::Text* const m_titleText;
+	sf::Text* const m_highScoreText;
+	sf::Text* const m_bestTimeText;
+
+	sf::Time* const m_currentTime;
+	sf::Text* const m_stopwatchText;
+
 	const sf::Time     c_transitionDuration;
 
 	const float        c_oldViewZoom;

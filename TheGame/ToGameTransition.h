@@ -7,8 +7,13 @@ class ToGameTransition :
 {
 public:
 	ToGameTransition(Game* const game,
-					 const SharedContext& sharedContext);
+					 const SharedContext& sharedContext,
+					 sf::Text* const title,
+					 sf::Text* const bestTime,
+					 sf::Text* const highScore);
 	~ToGameTransition();
+
+	virtual void clear();
 
 	virtual void handleInput(const sf::Event& event);
 	virtual void update(sf::Time elapsed);
@@ -16,6 +21,13 @@ public:
 
 private:
 	sf::Time m_elapsedTime;
+
+	sf::Text* const m_titleText;
+	sf::Text* const m_bestTimeText;
+	sf::Text* const m_highScoreText;
+
+	sf::Text* const m_stopwatchText;
+
 	const sf::Time c_transitionDuration;
 
 	const float c_oldPlayerRotation;

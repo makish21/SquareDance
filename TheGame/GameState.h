@@ -20,6 +20,7 @@ public:
 	{
 	};
 
+	virtual void clear() = 0;
 
 	virtual void handleInput(const sf::Event& event) = 0;
 	virtual void update(sf::Time elapsed) = 0;
