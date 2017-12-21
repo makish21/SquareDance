@@ -35,5 +35,7 @@ private:
 
 	sf::Time* const m_currentTime;
 	sf::Text* const m_stopwatchText;
+
+	sf::Shader* const m_worldShader;
 };
 

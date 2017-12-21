@@ -17,16 +17,25 @@ public:
 	Command* handleInput(const sf::Event& event);
 
 private:
+	enum Dir
+	{
+		None,
+		Left,
+		Right
+	};
+
+	std::vector<Dir> m_fingers;
+
 	sf::IntRect m_leftArea;
 	sf::IntRect m_rightArea;
 	sf::Keyboard::Key m_leftKey;
 	sf::Keyboard::Key m_rightKey;
 
-	bool isMovesLeft;
-	bool isMovesRight;
+	bool m_isMovesLeft;
+	bool m_isMovesRight;
 
-	Command* m_moveLeft;
-	Command* m_moveRight;
+	Command* m_startMovingLeft;
+	Command* m_startMovingRight;
 	Command* m_stopMovingLeft;
 	Command* m_stopMovingRight;
 };

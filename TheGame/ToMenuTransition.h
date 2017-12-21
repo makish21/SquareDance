@@ -1,6 +1,7 @@
 #pragma once
 #include "Animations.h"
 #include "MainMenuState.h"
+#include "ParticleSystem.h"
 
 class ToMenuTransition :
 	public GameState
@@ -9,7 +10,8 @@ public:
 	ToMenuTransition(Game* const game,
 					 const SharedContext& sharedContext,
 					 sf::Time* const currentTime,
-					 sf::Text* const stopwatch);
+					 sf::Text* const stopwatch,
+					 ParticleSystem* const particles);
 
 	~ToMenuTransition();
 
@@ -28,6 +30,8 @@ private:
 
 	sf::Time* const m_currentTime;
 	sf::Text* const m_stopwatchText;
+
+	ParticleSystem* const m_particles;
 
 	const sf::Time     c_transitionDuration;
 

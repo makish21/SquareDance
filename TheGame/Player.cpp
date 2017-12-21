@@ -3,7 +3,7 @@
 
 Player::Player(float x, float y, float w, float h) : 
 	m_shape(PLAYER_RADIUS, 4),
-	m_velocity(0.f, 3.f)
+	m_velocity(0.f, 1.f)
 {
 	setPosition(x, y);
 	m_shape.setFillColor(sf::Color(215, 255, 255));
@@ -78,27 +78,27 @@ void Player::setVelocity(const sf::Vector2f & velocity)
 
 void Player::moveLeft()
 {
-	m_velocity.x -= 2.f;
+	m_velocity.x -= 0.7f;
 }
 
 void Player::moveRight()
 {
-	m_velocity.x += 2.f;
+	m_velocity.x += 0.7f;
 }
 
 void Player::stopMovingLeft()
 {
-	m_velocity.x += 2.f;
+	m_velocity.x += 0.7f;
 }
 
 void Player::stopMovingRight()
 {
-	m_velocity.x -= 2.f;
+	m_velocity.x -= 0.7f;
 }
 
 void Player::update(World& world, sf::Time elapsed)
 {
-	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
+	move(m_velocity * elapsed.asSeconds() * (WORLD_SIZE.y - 20.f)/*static_cast<float>(elapsed.asMilliseconds()) / 11.5f*/);
 
 	checkCollisionWithWorld(world);
 	rotateComputation(world);

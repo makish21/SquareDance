@@ -1,5 +1,5 @@
 #include "FileManager.h"
-#include "CrossPlatform.hpp"
+#include "Platform.h"
 
 FileManager::FileManager()
 {
@@ -151,13 +151,14 @@ SpawnPresets * FileManager::getSpawnPresets() const
 sf::Time FileManager::loadHighScore() const
 {
 	sf::Time time;
-	sys::loadHighScore(time);
+	Platform::instance().loadHighScore(time);
 	return time;
 }
 
 void FileManager::saveHighScore(sf::Time score) const
 {
-	std::thread thread(sys::saveHighScore, score);
-	thread.detach();
+	//std::thread thread(Platform::instance().saveHighScore, score);
+	//thread.detach();
+	Platform::instance().saveHighScore(score);
 	//sys::saveHighScore(score);
 }

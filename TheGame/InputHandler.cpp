@@ -4,91 +4,84 @@ InputHandler::InputHandler(const sf::IntRect& leftArea,
 						   const sf::IntRect& rightArea,
 						   sf::Keyboard::Key moveLeft,
 						   sf::Keyboard::Key right) :
+	m_fingers(10, Dir::None),
 	m_leftArea(leftArea),
 	m_rightArea(rightArea),
 	m_leftKey(moveLeft),
 	m_rightKey(right),
-	isMovesLeft(false),
-	isMovesRight(false)
+	m_isMovesLeft(false),
+	m_isMovesRight(false)
 {
-	m_moveLeft = new MoveLeftCommand;
-	m_moveRight = new MoveRightCommand;
+	m_startMovingLeft = new MoveLeftCommand;
+	m_startMovingRight = new MoveRightCommand;
 	m_stopMovingLeft = new StopMovingLeftCommand;
 	m_stopMovingRight = new StopMovingRightCommand;
 }
 
 InputHandler::~InputHandler()
 {
-	delete m_moveLeft;
-	delete m_moveRight;
+	delete m_startMovingLeft;
+	delete m_startMovingRight;
 	delete m_stopMovingLeft;
 	delete m_stopMovingRight;
 }
 
 Command * InputHandler::handleInput(const sf::Event& event)
 {
-	if (m_leftArea.contains(sf::Vector2i(event.touch.x, event.touch.y))/* && event.touch.finger == 0*/)
+	if (event.type == sf::Event::TouchBegan)
 	{
-		if (event.type == sf::Event::TouchBegan && !isMovesLeft)
+		if (m_leftArea.contains(sf::Vector2i(event.touch.x, event.touch.y)) && !m_isMovesLeft)
 		{
-			isMovesLeft = true;
-			return m_moveLeft;
+			m_isMovesLeft = true;
+			m_fingers[event.touch.finger] = Left;
+			return m_startMovingLeft;
 		}
-		if (event.type == sf::Event::TouchMoved && !isMovesLeft && isMovesRight)
+		if (m_rightArea.contains(sf::Vector2i(event.touch.x, event.touch.y)) && !m_isMovesRight)
 		{
-			isMovesRight = false;
-			isMovesLeft = true;
-			return m_moveLeft;
-		}
-		if (event.type == sf::Event::TouchEnded && isMovesLeft)
-		{
-			isMovesLeft = false;
-			return m_stopMovingLeft;
+			m_isMovesRight = true;
+			m_fingers[event.touch.finger] = Right;
+			return m_startMovingRight;
 		}
 	}
-	if (m_rightArea.contains(sf::Vector2i(event.touch.x, event.touch.y))/* && event.touch.finger == 0*/)
+	if (event.type == sf::Event::TouchEnded)
 	{
-		if (event.type == sf::Event::TouchBegan && !isMovesRight)
+		if (m_fingers[event.touch.finger] == Left)
 		{
-			isMovesRight = true;
-			return m_moveRight;
+			m_isMovesLeft = false;
+			m_fingers[event.touch.finger] = None;
+			return m_stopMovingLeft;
 		}
-		if (event.type == sf::Event::TouchMoved && !isMovesRight && isMovesLeft)
+		if (m_fingers[event.touch.finger] == Right)
 		{
-			isMovesLeft = false;
-			isMovesRight = true;
-			return m_moveRight;
-		}
-		if (event.type == sf::Event::TouchEnded && isMovesRight)
-		{
-			isMovesRight = false;
+			m_isMovesRight = false;
+			m_fingers[event.touch.finger] = None;
 			return m_stopMovingRight;
 		}
 	}
 
 	if (event.key.code == m_leftKey)
 	{
-		if (event.type == sf::Event::KeyPressed && !isMovesLeft)
+		if (event.type == sf::Event::KeyPressed && !m_isMovesLeft)
 		{
-			isMovesLeft = true;
-			return m_moveLeft;
+			m_isMovesLeft = true;
+			return m_startMovingLeft;
 		}
-		else if (event.type == sf::Event::KeyReleased && isMovesLeft)
+		else if (event.type == sf::Event::KeyReleased && m_isMovesLeft)
 		{
-			isMovesLeft = false;
+			m_isMovesLeft = false;
 			return m_stopMovingLeft;
 		}
 	}
 	if (event.key.code == m_rightKey)
 	{
-		if (event.type == sf::Event::KeyPressed && !isMovesRight)
+		if (event.type == sf::Event::KeyPressed && !m_isMovesRight)
 		{
-			isMovesRight = true;
-			return m_moveRight;
+			m_isMovesRight = true;
+			return m_startMovingRight;
 		}
-		else if (event.type == sf::Event::KeyReleased && isMovesRight)
+		else if (event.type == sf::Event::KeyReleased && m_isMovesRight)
 		{
-			isMovesRight = false;
+			m_isMovesRight = false;
 			return m_stopMovingRight;
 		}
 	}

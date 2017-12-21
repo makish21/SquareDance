@@ -30,7 +30,7 @@
     <ProjectGuid>{25211C2C-FE43-4C08-862E-9DAEDC4026E8}</ProjectGuid>
     <RootNamespace>lollalrear</RootNamespace>
     <ProjectName>SquareDance</ProjectName>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -175,15 +175,20 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\SFML-2.4.2\include;C:\Users\makis\Source\Repos\Collider2D\CollisionDetection\CollisionDetection;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\SFML-2.4.2\lib;C:\Users\makis\Source\Repos\Collider2D\CollisionDetection\bin\x64\Collider2D;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;opengl32.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;Collider2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AcceptanceBackground.cpp" />
+    <ClCompile Include="AndroidPlatform.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="DebugOverlay.cpp" />
     <ClCompile Include="DefaultEnemy.cpp" />
@@ -201,6 +206,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PreparationState.cpp" />
     <ClCompile Include="RenderButton.cpp" />
@@ -213,6 +219,7 @@
     <ClCompile Include="ToMenuTransition.cpp" />
     <ClCompile Include="ToPauseTransition.cpp" />
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -221,8 +228,7 @@
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Commands.hpp" />
     <ClInclude Include="Controllable.hpp" />
-    <ClInclude Include="Android.hpp" />
-    <ClInclude Include="CrossPlatform.hpp" />
+    <ClInclude Include="AndroidPlatform.h" />
     <ClInclude Include="DebugOverlay.h" />
     <ClInclude Include="DefaultEnemy.h" />
     <ClInclude Include="Definitions.hpp" />
@@ -249,11 +255,12 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="SpawnPresets.h" />
     <ClInclude Include="Subject.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="ToGameTransition.h" />
     <ClInclude Include="ToMenuTransition.h" />
     <ClInclude Include="ToPauseTransition.h" />
     <ClInclude Include="Animations.h" />
-    <ClInclude Include="Windows.hpp" />
+    <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

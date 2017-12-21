@@ -82,7 +82,7 @@ void ParticleSystem::resetParticles()
 		float speed = (std::rand() % 5000) / 1000.f;
 
 		m_particles[i].velocity = sf::Vector2f(std::cos(angle) * speed,
-											   std::sin(angle) * speed) + (m_direction * 2.f);
+											   std::sin(angle) * speed) + (m_direction * 6.f);
 		m_particles[i].lifeTime = sf::microseconds(m_lifetime.asMicroseconds() - 
 												   std::rand() % (m_lifetime.asMicroseconds() / 2));
 

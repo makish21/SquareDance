@@ -14,6 +14,8 @@ PreparationState::PreparationState(Game* const game,
 			  sharedContext),
 	m_stopwatchText(stopwatch),
 	m_currentTime(currentTime),
+	m_pauseButton(new RenderButton(sf::FloatRect(game->getCurrentVideoMode().width - 60,
+												 0, 60, 60))),
 	m_effect(new sf::RenderTexture),
 	m_effectTime(new sf::Time(sf::Time::Zero))
 {
@@ -21,8 +23,12 @@ PreparationState::PreparationState(Game* const game,
 	sharedContext.world->setBoundsColor(GAME_WORLD_COLOR);
 	sharedContext.player->setScale(1.f, 1.f);
 
+	m_pauseButton->setTexture(*sharedContext.fileManager->getTexture("PauseIcon"));
+	m_pauseButton->setAlignment(Center, Center);
+	m_pauseButton->setFitting(Fit, 0.5f);
+
 	sf::Text text(getElapsedString(*m_shared.bestTime),
-				  *m_shared.fileManager->getFont("Helvetica"),
+				  *m_shared.fileManager->getFont("Titles"),
 				  m_stopwatchText->getCharacterSize());
 	sf::FloatRect rect = text.getLocalBounds();
 	m_effect->create(rect.left + rect.width,
@@ -40,6 +46,7 @@ void PreparationState::clear()
 {
 	delete m_stopwatchText;
 	delete m_currentTime;
+	delete m_pauseButton;
 	delete m_effect;
 	delete m_effectTime;
 }
@@ -50,6 +57,8 @@ void PreparationState::handleInput(const sf::Event & event)
 	{
 		if (event.key.code == sf::Keyboard::Escape)
 		{
+			delete m_pauseButton;
+
 			m_game->changeState(new ToPauseTransition(m_game,
 													  m_shared,
 													  m_currentTime,
@@ -76,8 +85,7 @@ void PreparationState::update(sf::Time elapsed)
 		}
 
 		float gameSpeedFactor = std::sin(m_currentTime->asSeconds() * PI / 120.f / 2.f) + 1.f;
-		float accelerationFactor = std::sin(m_stateTime.asSeconds() / PREPARING_DURATION * PI / 2.f);// *gameSpeedFactor;
-		//float stopwatchSpeedFactor = std::sin(m_stateTime.asSeconds() / PREPARING_DURATION * PI / 2.f);
+		float accelerationFactor = std::sin(m_stateTime.asSeconds() / PREPARING_DURATION * PI / 2.f);
 
 		*m_currentTime += elapsed * accelerationFactor;
 		m_stopwatchText->setString(getElapsedString(*m_currentTime));
@@ -98,7 +106,8 @@ void PreparationState::update(sf::Time elapsed)
 					m_game->changeState(new RevivalState(m_game,
 														 m_shared,
 														 m_currentTime,
-														 m_stopwatchText));
+														 m_stopwatchText,
+														 m_pauseButton));
 					return;
 				}
 			}
@@ -111,11 +120,14 @@ void PreparationState::update(sf::Time elapsed)
 			m_game->changeState(new GameProcessState(m_game,
 													 m_shared,
 													 m_currentTime,
-													 m_stopwatchText));
+													 m_stopwatchText,
+													 m_pauseButton));
 			return;
 		}
 		else
 		{
+			delete m_pauseButton;
+
 			m_game->changeState(new ToPauseTransition(m_game,
 													  m_shared,
 													  m_currentTime,
@@ -140,6 +152,7 @@ void PreparationState::draw(sf::RenderWindow & window)
 	}
 
 	window.setView(window.getDefaultView());
+	window.draw(*m_pauseButton);
 	window.draw(*m_stopwatchText);
 	window.draw(m_sprite);
 }

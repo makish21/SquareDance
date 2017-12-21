@@ -21,7 +21,8 @@ public:
 	GameProcessState(Game* const game,
 					 const SharedContext& sharedContext,
 					 sf::Time* const currentTime,
-					 sf::Text* const stopwatch);
+					 sf::Text* const stopwatch,
+					 RenderButton* const pauseButton);
 	~GameProcessState();
 
 	virtual void clear();
@@ -32,14 +33,10 @@ public:
 
 private:
 	sf::Texture m_texture;
-	RenderButton m_pauseButton;
+	RenderButton* const m_pauseButton;
 
 	sf::Text* const m_stopwatchText;
 	sf::Time* const m_currentTime;
 	float m_speedFactor;
-
-	sf::RenderTexture* const m_effect;
-	sf::Time* const m_effectTime;
-	sf::Sprite m_sprite;
 };
 

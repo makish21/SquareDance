@@ -40,6 +40,9 @@
     <Filter Include="Game\Engine\Backgrounds">
       <UniqueIdentifier>{1a7f9803-2819-4595-896e-83ffd302ae4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Engine\Platforms">
+      <UniqueIdentifier>{cf2761af-c576-4fca-a42e-88e6233e597e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -129,6 +132,15 @@
     <ClCompile Include="Animations.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="WindowsPlatform.cpp">
+      <Filter>Game\Engine\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Game\Engine\Platforms</Filter>
+    </ClCompile>
+    <ClCompile Include="AndroidPlatform.cpp">
+      <Filter>Game\Engine\Platforms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -206,9 +218,6 @@
     <ClInclude Include="RevivalState.h">
       <Filter>Game\States</Filter>
     </ClInclude>
-    <ClInclude Include="Android.hpp">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="IntroState.h">
       <Filter>Game\States</Filter>
     </ClInclude>
@@ -242,11 +251,14 @@
     <ClInclude Include="Animations.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="CrossPlatform.hpp">
-      <Filter>Game</Filter>
+    <ClInclude Include="Platform.h">
+      <Filter>Game\Engine\Platforms</Filter>
     </ClInclude>
-    <ClInclude Include="Windows.hpp">
-      <Filter>Game</Filter>
+    <ClInclude Include="WindowsPlatform.h">
+      <Filter>Game\Engine\Platforms</Filter>
+    </ClInclude>
+    <ClInclude Include="AndroidPlatform.h">
+      <Filter>Game\Engine\Platforms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

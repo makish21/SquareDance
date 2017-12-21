@@ -64,7 +64,7 @@ void AcceptanceBackground::update(sf::Time elapsed)
 
 	m_pulseTime += elapsed;
 
-	float rectScaleFactor = pulse(m_pulseTime, sf::seconds(1.9f), 0.85f, 0.15f);
+	float rectScaleFactor = pulse(m_pulseTime, sf::seconds(1.5f), 0.85f, 0.15f);
 
 	m_smallRect.setScale(rectScaleFactor, rectScaleFactor);
 	m_mediumRect.setScale(rectScaleFactor, rectScaleFactor);

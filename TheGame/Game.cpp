@@ -38,25 +38,30 @@ Game::Game() :
 #endif // DEBUG
 	m_window.setKeyRepeatEnabled(false);
 
-	m_fileManager.loadFont("Buttons", "GameButtons.ttf");
-	m_fileManager.loadFont("Helvetica", "HelveticaNeueCyr.otf");
-	m_fileManager.loadFont("Futurica", "FuturicaBs.ttf");
+	m_fileManager.loadFont("Titles", "Fonts/HelveticaNeueCyr.otf");
+	m_fileManager.loadFont("Text", "Fonts/Raleway-Light.ttf");
 
-	m_fileManager.loadSpawnPresets("SpawnPresets.txt");
+	m_fileManager.loadSpawnPresets("Data/SpawnPresets.txt");
 	m_enemySpawner.setSpawnPresets(m_fileManager.getSpawnPresets());
 
 	if (sf::Shader::isAvailable())
 	{
-		m_fileManager.loadShader("WhiteRadialGradient",
-								 "RadialGradient.frag",
-								 "RadialGradient.vert");
+		m_fileManager.loadShader("RadialGradient",
+								 "Shaders/RadialGradient.frag",
+								 "Shaders/RadialGradient.vert");
 
-		m_world.setShader(m_fileManager.getShader("WhiteRadialGradient"));
+		m_radialGradient = m_fileManager.getShader("RadialGradient");
+
+		m_radialGradient->setUniform("expand", 0.f);
+		m_radialGradient->setUniform("color", sf::Glsl::Vec4(sf::Color::White));
+
+		m_world.setShader(m_fileManager.getShader("RadialGradient"));
 	}
+
 
 	updateRender(m_currentVideoMode);
 
-	m_music.openFromFile("Courtesy.ogg");
+	m_music.openFromFile("Music/Courtesy.ogg");
 	m_music.setLoop(true);
 	m_music.setVolume(50.f);
 	m_music.play();
@@ -78,8 +83,10 @@ Game::Game() :
 
 
 #ifndef NDEBUG
+	m_fileManager.loadFont("Debug", "Fonts/Consolas.ttf");
+
 	m_debugOverlay.setGame(this);
-	m_debugOverlay.setFont(m_fileManager.getFont("Futurica"));
+	m_debugOverlay.setFont(m_fileManager.getFont("Debug"));
 #endif
 }
 
@@ -206,6 +213,11 @@ void Game::updateRender(unsigned int width, unsigned int height, unsigned int bi
 									   VIEW_CENTER.y - m_defaultViewSize.y / 2,
 									   m_defaultViewSize.x,
 									   m_defaultViewSize.y));
+	if (sf::Shader::isAvailable())
+	{
+		m_radialGradient->setUniform("windowHeight",
+									 static_cast<float>(m_currentVideoMode.height));
+	}
 }
 
 void Game::handleInput()
@@ -251,6 +263,17 @@ void Game::update()
 {
 	while (m_elapsed.asSeconds() >= FRAME_TIME)
 	{
+		if (sf::Shader::isAvailable())
+		{
+			sf::Vector2f playerPosition(m_player.getPosition());
+			sf::Vector2f shaderCenter(mapCoordsToPixel(playerPosition, m_view));
+
+			float radius = RADIAL_SHADER_FACTOR * m_currentVideoMode.width / m_viewZoom;
+
+			m_radialGradient->setUniform("center", shaderCenter);
+			m_radialGradient->setUniform("radius", radius);
+		}
+
 		m_background->update(sf::seconds(FRAME_TIME));
 		m_world.update(sf::seconds(FRAME_TIME), &m_player, &m_view);
 

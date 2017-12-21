@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "RenderButton.h"
 class PreparationState :
 	public GameState
 {
@@ -21,6 +22,8 @@ private:
 
 	sf::Time* const m_currentTime;
 	sf::Text* const m_stopwatchText;
+
+	RenderButton* const m_pauseButton;
 
 	sf::RenderTexture* const m_effect;
 	sf::Time* const m_effectTime;

@@ -39,9 +39,9 @@ ToGameTransition::ToGameTransition(Game* const game,
 	textPosition = sf::Vector2f(game->mapCoordsToPixel(textPosition,
 													   *sharedContext.gameView));
 
-	m_stopwatchText->setFont(*m_shared.fileManager->getFont("Helvetica"));
+	m_stopwatchText->setFont(*m_shared.fileManager->getFont("Titles"));
 	m_stopwatchText->setCharacterSize(characterSize);
-	m_stopwatchText->setString("00:00.00");
+	m_stopwatchText->setString("0.00");
 	sf::FloatRect textRect = m_stopwatchText->getLocalBounds();
 	m_stopwatchText->setOrigin(textRect.left + textRect.width / 2,
 							   textRect.top + textRect.height / 2);

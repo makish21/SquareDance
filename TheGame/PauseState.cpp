@@ -25,7 +25,8 @@ PauseState::PauseState(Game * const game,
 	m_blurShader(sharedContext.fileManager->getShader("Blur")),
 	m_pauseText(pauseText),
 	m_currentTime(currentTime),
-	m_stopwatchText(stopwatch)
+	m_stopwatchText(stopwatch),
+	m_worldShader(sharedContext.fileManager->getShader("RadialGradient"))
 {
 	m_returnButton->setRect(sf::FloatRect(game->getCurrentVideoMode().width - 250,
 										  game->getCurrentVideoMode().height - 150,
@@ -110,7 +111,8 @@ void PauseState::handleInput(const sf::Event & event)
 											new ToMenuTransition(m_game,
 																 m_shared,
 																 m_currentTime,
-																 m_stopwatchText)));
+																 m_stopwatchText,
+																 nullptr)));
 		return;
 	}
 }
@@ -126,6 +128,14 @@ void PauseState::draw(sf::RenderWindow & window)
 	m_blurredScene->setView(window.getDefaultView());
 	m_blurredScene->draw(*m_shared.background);
 	m_blurredScene->setView(*m_shared.gameView);
+
+	sf::Vector2f playerPosition(m_shared.player->getPosition());
+	sf::Vector2f shaderCenter(m_blurredScene->mapCoordsToPixel(playerPosition, *m_shared.gameView));
+	float radius = RADIAL_SHADER_FACTOR * m_blurredScene->getSize().y / 
+		m_game->getViewZoom() / PAUSE_BLUR_FACTOR / 2.f;
+	m_worldShader->setUniform("radius", radius);
+	m_worldShader->setUniform("center", shaderCenter);
+
 	m_blurredScene->draw(*m_shared.world);
 	for (auto i = m_shared.objects->begin(); i != m_shared.objects->end(); i++)
 	{
@@ -136,7 +146,8 @@ void PauseState::draw(sf::RenderWindow & window)
 	m_blurredScene->display();
 
 	//---------------------Blurring scene-----------------------
-	m_blurSprite.setTexture(m_blurredScene->getTexture());
+	m_blurSprite.setTexture(m_blurredScene->getTexture(), true);
+	m_blurSprite.setScale(1.f, 1.f);
 	m_blurShader->setUniform("texture", m_blurredScene->getTexture());
 	m_blurShader->setUniform("direction", sf::Glsl::Vec2(1.f, 0.f));
 
@@ -144,7 +155,8 @@ void PauseState::draw(sf::RenderWindow & window)
 	m_FBO_A->draw(m_blurSprite, m_blurShader);
 	m_FBO_A->display();
 
-	m_blurSprite.setTexture(m_FBO_A->getTexture());
+	m_blurSprite.setTexture(m_FBO_A->getTexture(), true);
+	m_blurSprite.setScale(1.f, 1.f);
 	m_blurShader->setUniform("texture", m_FBO_A->getTexture());
 	m_blurShader->setUniform("direction", sf::Glsl::Vec2(0.f, 1.f));
 
@@ -153,7 +165,7 @@ void PauseState::draw(sf::RenderWindow & window)
 	m_FBO_B->display();
 
 	//----------Draw blurred scene and other stuff---------------
-	m_blurSprite.setTexture(m_FBO_B->getTexture());
+	m_blurSprite.setTexture(m_FBO_B->getTexture(), true);
 	m_blurSprite.setScale(1.f / PAUSE_BLUR_FACTOR, 1.f / PAUSE_BLUR_FACTOR);
 
 	window.setView(window.getDefaultView());

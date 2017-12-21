@@ -2,29 +2,34 @@
 #include "Definitions.hpp"
 #include "PreparationState.h"
 #include "PauseState.h"
-#include "CrossPlatform.hpp"
 #include "Animations.h"
+#include "ToMenuTransition.h"
+#include "Platform.h"
 
 RevivalState::RevivalState(Game* const game,
 						   const SharedContext& sharedContext,
 						   sf::Time* const currentTime,
-						   sf::Text* const stopwatch) :
+						   sf::Text* const stopwatch,
+						   RenderButton* const pauseButton) :
 	GameState(game,
 			  sharedContext),
-	m_particleSystem(100, sharedContext.player->getColor(), sf::seconds(PLAYER_REVIVAL_DURATION - 0.5f)),
+	m_particleSystem(new ParticleSystem(100,
+										sharedContext.player->getColor(),
+										sf::seconds(PLAYER_REVIVAL_DURATION - 0.5f))),
 	m_stateTime(sf::milliseconds(0)),
 	m_deathSound(*sharedContext.fileManager->getSound("RecordRewind")),
 	m_currentTime(currentTime),
-	m_stopwatchText(stopwatch)
+	m_stopwatchText(stopwatch),
+	m_pauseButton(pauseButton)
 {
-	m_particleSystem.setEmitter(sharedContext.player->getPosition());
-	m_particleSystem.setDirection(sharedContext.player->getVelocity());
-	m_particleSystem.resetParticles();
+	m_particleSystem->setEmitter(sharedContext.player->getPosition());
+	m_particleSystem->setDirection(sharedContext.player->getVelocity());
+	m_particleSystem->resetParticles();
 
 	sharedContext.enemySpawner->reset();
 	m_deathSound.play();
 
-	sys::vibrate(sf::milliseconds(100));
+	Platform::instance().vibrate(sf::milliseconds(100));
 
 	sharedContext.player->setRotation(225.f);
 	sharedContext.player->setScale(0.f, 0.f);
@@ -39,16 +44,29 @@ RevivalState::RevivalState(Game* const game,
 
 RevivalState::~RevivalState()
 {
+	delete m_pauseButton;
 }
 
 void RevivalState::clear()
 {
 	delete m_currentTime;
 	delete m_stopwatchText;
+	delete m_particleSystem;
 }
 
 void RevivalState::handleInput(const sf::Event & event)
 {
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::Escape)
+		{
+			m_game->changeState(new ToMenuTransition(m_game,
+													 m_shared,
+													 m_currentTime,
+													 m_stopwatchText,
+													 m_particleSystem));
+		}
+	}
 }
 
 void RevivalState::update(sf::Time elapsed)
@@ -65,7 +83,7 @@ void RevivalState::update(sf::Time elapsed)
 		{
 			(*i)->update(*m_shared.world, elapsed * speedFactor);
 		}
-		m_particleSystem.update(elapsed);
+		m_particleSystem->update(elapsed);
 
 		m_shared.player->setScale(timeFactor, timeFactor);
 		m_shared.player->setRotation(transfer(m_stateTime,
@@ -75,7 +93,7 @@ void RevivalState::update(sf::Time elapsed)
 	else
 	{
 		*m_currentTime = sf::Time::Zero;
-		m_stopwatchText->setString("00:00.00");
+		m_stopwatchText->setString("0.00");
 		m_game->changeState(new PreparationState(m_game,
 												 m_shared,
 												 m_currentTime,
@@ -98,8 +116,9 @@ void RevivalState::draw(sf::RenderWindow & window)
 		window.draw(**i);
 	}
 
-	window.draw(m_particleSystem);
+	window.draw(*m_particleSystem);
 
 	window.setView(window.getDefaultView());
+	window.draw(*m_pauseButton);
 	window.draw(*m_stopwatchText);
 }

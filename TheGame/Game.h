@@ -111,6 +111,7 @@ private:
 	GameObjects m_gameObjects;
 	sf::Time    m_bestTime;
 	sf::Music   m_music;
+	sf::Shader* m_radialGradient;
 
 	// State members
 	GameState* m_state;

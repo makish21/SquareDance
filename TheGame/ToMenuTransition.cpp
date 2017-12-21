@@ -5,7 +5,8 @@
 ToMenuTransition::ToMenuTransition(Game* const game,
 								   const SharedContext& sharedContext,
 								   sf::Time* const currentTime,
-								   sf::Text* const stopwatch) :
+								   sf::Text* const stopwatch,
+								   ParticleSystem* const particles) :
 	GameState(game,
 			  sharedContext),
 	m_titleText(new sf::Text),
@@ -13,6 +14,7 @@ ToMenuTransition::ToMenuTransition(Game* const game,
 	m_bestTimeText(new sf::Text),
 	m_currentTime(currentTime),
 	m_stopwatchText(stopwatch),
+	m_particles(particles),
 	c_transitionDuration(sf::seconds(TO_MENU_TRANSITION_DURATION)),
 	c_oldPlayerPosition(sharedContext.player->getPosition()),
 	c_oldPlayerScale(sharedContext.player->getScale()),
@@ -32,7 +34,7 @@ ToMenuTransition::ToMenuTransition(Game* const game,
 		TITLE_CHARACTER_SIZE *
 		bestVM.height;
 
-	m_titleText->setFont(*m_shared.fileManager->getFont("Helvetica"));
+	m_titleText->setFont(*m_shared.fileManager->getFont("Titles"));
 	m_titleText->setCharacterSize(characterSize);
 	m_titleText->setString(GAME_NAME);
 	sf::FloatRect textRect = m_titleText->getLocalBounds();
@@ -47,10 +49,10 @@ ToMenuTransition::ToMenuTransition(Game* const game,
 
 
 	characterSize = CHARACTER_SIZE_FACTOR * 25 * bestVM.height;
-	m_bestTimeText->setFont(*m_shared.fileManager->getFont("Helvetica"));
+	m_bestTimeText->setFont(*m_shared.fileManager->getFont("Text"));
 	m_bestTimeText->setCharacterSize(characterSize);
 	m_bestTimeText->setString("Best time:");
-	m_bestTimeText->setStyle(sf::Text::Style::Bold);
+	//m_bestTimeText->setStyle(sf::Text::Style::Regular);
 	m_bestTimeText->setFillColor(sf::Color::Transparent);
 	textRect = m_bestTimeText->getLocalBounds();
 	m_bestTimeText->setOrigin(textRect.left + textRect.width / 2,
@@ -60,15 +62,15 @@ ToMenuTransition::ToMenuTransition(Game* const game,
 	m_bestTimeText->setPosition(currentVM.width / 2, currentVM.height / 1.3f);
 
 	characterSize = CHARACTER_SIZE_FACTOR * 40 * bestVM.height;
-	m_highScoreText->setFont(*m_shared.fileManager->getFont("Helvetica"));
+	m_highScoreText->setFont(*m_shared.fileManager->getFont("Titles"));
 	m_highScoreText->setCharacterSize(characterSize);
 	m_highScoreText->setString(getElapsedString(*sharedContext.bestTime));
 	m_highScoreText->setFillColor(sf::Color::Transparent);
 	textRect = m_highScoreText->getLocalBounds();
 	m_highScoreText->setOrigin(textRect.left + textRect.width / 2,
-							textRect.top - 5.f);
+							   textRect.top - 5.f);
 	m_highScoreText->setScale(float(currentVM.width) / float(bestVM.width),
-						   float(currentVM.width) / float(bestVM.width));
+							  float(currentVM.width) / float(bestVM.width));
 	m_highScoreText->setPosition(currentVM.width / 2, currentVM.height / 1.3f);
 
 }
@@ -84,6 +86,7 @@ ToMenuTransition::~ToMenuTransition()
 
 	delete m_currentTime;
 	delete m_stopwatchText;
+	delete m_particles;
 }
 
 void ToMenuTransition::clear()
@@ -113,6 +116,11 @@ void ToMenuTransition::update(sf::Time elapsed)
 	m_elapsedTime += elapsed;
 
 	m_shared.player->rotate(-10.f * elapsed.asSeconds());
+
+	if (m_particles)
+	{
+		m_particles->update(elapsed);
+	}
 
 	if (m_elapsedTime <= c_transitionDuration)
 	{
@@ -170,6 +178,10 @@ void ToMenuTransition::draw(sf::RenderWindow & window)
 	window.setView(*m_shared.gameView);
 
 	window.draw(*m_shared.world);
+	if (m_particles)
+	{
+		window.draw(*m_particles);
+	}
 	window.draw(*m_shared.player);
 
 	for (auto i = m_shared.objects->begin(); i != m_shared.objects->end(); i++)

@@ -33,7 +33,7 @@
 #define GAME_TITLE_COLOR sf::Color(242, 227, 160, 0)
 
 #define STOPWATCH_COLOR sf::Color(215, 255, 255, 255)
-#define BEST_TIME_COLOR sf::Color(180, 180, 255, 255)
+#define BEST_TIME_COLOR sf::Color(35, 172, 255, 255)
 
 #define MIN_INTRO_DURATION 3.f
 #define TO_MENU_TRANSITION_DURATION 2.f
