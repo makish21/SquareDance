@@ -215,6 +215,10 @@
     <ClCompile Include="RoundedRectangleShape.cpp" />
     <ClCompile Include="SpawnPresets.cpp" />
     <ClCompile Include="Subject.cpp" />
+    <ClCompile Include="tinystr.cpp" />
+    <ClCompile Include="tinyxml.cpp" />
+    <ClCompile Include="tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxmlparser.cpp" />
     <ClCompile Include="ToGameTransition.cpp" />
     <ClCompile Include="ToMenuTransition.cpp" />
     <ClCompile Include="ToPauseTransition.cpp" />
@@ -256,6 +260,8 @@
     <ClInclude Include="SpawnPresets.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="Platform.h" />
+    <ClInclude Include="tinystr.h" />
+    <ClInclude Include="tinyxml.h" />
     <ClInclude Include="ToGameTransition.h" />
     <ClInclude Include="ToMenuTransition.h" />
     <ClInclude Include="ToPauseTransition.h" />
@@ -280,6 +286,11 @@
     <Font Include="FuturicaBs.ttf" />
     <Font Include="GameButtons.ttf" />
     <Font Include="HelveticaNeueCyr.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Data\SpawnPresets.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -41,7 +41,7 @@ Game::Game() :
 	m_fileManager.loadFont("Titles", "Fonts/HelveticaNeueCyr.otf");
 	m_fileManager.loadFont("Text", "Fonts/Raleway-Light.ttf");
 
-	m_fileManager.loadSpawnPresets("Data/SpawnPresets.txt");
+	m_fileManager.loadSpawnPresets("Data/SpawnPresets.xml");
 	m_enemySpawner.setSpawnPresets(m_fileManager.getSpawnPresets());
 
 	if (sf::Shader::isAvailable())

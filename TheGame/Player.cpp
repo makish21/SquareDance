@@ -104,15 +104,6 @@ void Player::update(World& world, sf::Time elapsed)
 	rotateComputation(world);
 	
 	updateCollision();
-
-	if (!m_life)
-	{
-		m_shape.setFillColor(sf::Color::Red);
-	}
-	else
-	{
-		m_shape.setFillColor(sf::Color(215, 255, 255));
-	}
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -1,4 +1,6 @@
 #include "SpawnPresets.h"
+#include "tinyxml.h"
+#include "Definitions.hpp"
 
 SpawnPresets::SpawnPresets()
 {
@@ -30,76 +32,60 @@ SpawnPresets::~SpawnPresets()
 	m_presets.clear();
 }
 
-void SpawnPresets::loadFromFile(const std::string & file)
+void SpawnPresets::loadFromFile(const std::string & fileName)
 {
-	sf::FileInputStream presets;
-	presets.open(file);
+	sf::FileInputStream file;
+	file.open(fileName);
 
-	char* content = new char[presets.getSize() + 1];
-	presets.read(content, presets.getSize());
-	content[presets.getSize()] = '\0';
+	char* content = new char[file.getSize() + 1];
+	file.read(content, file.getSize());
+	content[file.getSize()] = '\0';
 
-	std::istringstream stream(content);
-	std::string line;
+	TiXmlDocument doc;
+	doc.Parse(content, 0, TIXML_ENCODING_UTF8);
+	TiXmlElement* root = doc.FirstChildElement();
 
-	while (std::getline(stream, line))
+	//TiXmlElement* pSpawnersNode = hRoot.FirstChild("preset").Element();
+
+	for (TiXmlElement* p_preset = root->FirstChildElement(); p_preset; p_preset = p_preset->NextSiblingElement())
 	{
-		std::string type;
-		bool preset = false;
+		SpawnPreset preset;
 
-		std::stringstream keyStream(line);
-		keyStream >> type;
-
-		if (type == "PRESET_BEGIN")
+		for (TiXmlElement* p_group = p_preset->FirstChildElement(); p_group; p_group = p_group->NextSiblingElement())
 		{
-			preset = true;
+			SpawnGroup group;
+			p_group->QueryFloatAttribute("break-time", &group.m_breakTime);
+
+			for (TiXmlElement* p_enemy = p_group->FirstChildElement(); p_enemy; p_enemy = p_enemy->NextSiblingElement())
+			{
+				std::string enemyName = p_enemy->Value();
+
+				if (enemyName == "DefaultEnemy")
+				{
+					float y, dir;
+
+					if (std::string(p_enemy->Attribute("y")) == "random")
+					{
+						y = static_cast<float>(std::rand() % 1000) / 1000.f;
+					}
+					else
+					{
+						p_enemy->QueryFloatAttribute("y", &y);
+					}
+
+					y = y * (WORLD_SIZE.y - 30.f) + 15.f;
+					p_enemy->QueryFloatAttribute("dir", &dir);
+
+					group.m_enemies.push_back(new DefaultEnemy(y, dir));
+				}
+			}
+
+			preset.push_back(group);
 		}
 
-		SpawnPreset spawnPreset;
-
-		while (preset)
-		{
-			bool group = false;
-
-			keyStream >> type;
-
-			if (type == "GROUP_BEGIN")
-			{
-				group = true;
-			}
-			if (type == "PRESET_END")
-			{
-				m_presets.push_back(spawnPreset);
-				preset = false;
-			}
-
-			SpawnGroup spawnGroup;
-
-			while (group)
-			{
-				keyStream >> type;
-
-				if (type == "DEFAULT_ENEMY")
-				{
-					float y, velocityX;
-					keyStream >> y >> velocityX;
-
-					spawnGroup.m_enemies.push_back(new DefaultEnemy(y, velocityX));
-				}
-
-				if (type == "BREAK_TIME")
-				{
-					keyStream >> spawnGroup.m_breakTime;
-				}
-
-				if (type == "GROUP_END")
-				{
-					spawnPreset.push_back(spawnGroup);
-					group = false;
-				}
-			}
-		}
+		m_presets.push_back(preset);
 	}
+
 	delete[] content;
 }
 

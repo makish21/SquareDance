@@ -169,3 +169,9 @@ $RECYCLE.BIN/
 /TheGame/.vs/SquareDance/v15
 *.png
 *.sds
+/TheGame/tinyxmlparser.cpp
+/TheGame/tinyxmlerror.cpp
+/TheGame/tinyxml.h
+/TheGame/tinyxml.cpp
+/TheGame/tinystr.h
+/TheGame/tinystr.cpp

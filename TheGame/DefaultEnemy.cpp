@@ -1,8 +1,9 @@
 #include "DefaultEnemy.h"
+#include "Definitions.hpp"
 
 #define RADIUS 14.14213f
 
-DefaultEnemy::DefaultEnemy(float y, float velocityX)
+DefaultEnemy::DefaultEnemy(float y, float dirX)
 {
 	m_velocity.y = 0;
 
@@ -14,7 +15,7 @@ DefaultEnemy::DefaultEnemy(float y, float velocityX)
 	m_shape.setFillColor(sf::Color(110,255,231));
 	m_shape.setPointCount(5);
 
-	if (velocityX > 0)
+	if (dirX > 0)
 	{
 		setPosition(-50, y);
 	}
@@ -23,7 +24,7 @@ DefaultEnemy::DefaultEnemy(float y, float velocityX)
 		setPosition(850, y);
 	}
 
-	m_velocity.x = velocityX;
+	m_velocity.x = dirX * 0.7f;
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -37,17 +38,18 @@ DefaultEnemy::DefaultEnemy(float y, float velocityX)
 
 void DefaultEnemy::update(World& world, sf::Time elapsed)
 {
-	checkCollisionWithWorld(world);
+	move(m_velocity * elapsed.asSeconds() * (WORLD_SIZE.y - 20.f));
+	rotate(m_velocity.x * elapsed.asSeconds() * (WORLD_SIZE.y - 20.f));
 
-	move(m_velocity * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
-	rotate(m_velocity.x * static_cast<float>(elapsed.asMilliseconds()) / 11.5f);
+	checkCollisionWithWorld(world);
 
 	updateCollision();
 }
 
 Enemy * DefaultEnemy::clone()
 {
-	return new DefaultEnemy(getPosition().y, m_velocity.x);
+	float dir = (m_velocity.x / std::fabs(m_velocity.x));
+	return new DefaultEnemy(getPosition().y, dir);
 }
 
 void DefaultEnemy::updateCollision()

@@ -1,0 +1,205 @@
+<?xml version="1.0" ?>
+<presets>
+  <preset name="DiagonalTR">
+    <group break-time="0.1">
+      <DefaultEnemy y="0" dir="-1" />
+    </group>
+
+    <group break-time="0.2">
+      <DefaultEnemy y="0.25" dir="-1" />
+    </group>
+
+    <group break-time="0.1">
+      <DefaultEnemy y="0.75" dir="-1" />
+    </group>
+
+    <group break-time="2">
+      <DefaultEnemy y="1" dir="-1" />
+    </group>
+  </preset>
+
+  <preset name="DiagonalDR">
+    <group break-time="0.1">
+      <DefaultEnemy y="1" dir="-1" />
+    </group>
+
+    <group break-time="0.2">
+      <DefaultEnemy y="0.75" dir="-1" />
+    </group>
+
+    <group break-time="0.1">
+      <DefaultEnemy y="0.25" dir="-1" />
+    </group>
+
+    <group break-time="2">
+      <DefaultEnemy y="0" dir="-1" />
+    </group>
+  </preset>
+
+  <preset name="DiagonalTL">
+    <group break-time="0.1">
+      <DefaultEnemy y="0" dir="1" />
+    </group>
+
+    <group break-time="0.2">
+      <DefaultEnemy y="0.25" dir="1" />
+    </group>
+
+    <group break-time="0.1">
+      <DefaultEnemy y="0.75" dir="1" />
+    </group>
+
+    <group break-time="2">
+      <DefaultEnemy y="1" dir="1" />
+    </group>
+  </preset>
+
+  <preset name="DiagonalDL">
+    <group break-time="0.1">
+      <DefaultEnemy y="1" dir="1" />
+    </group>
+
+    <group break-time="0.2">
+      <DefaultEnemy y="0.75" dir="1" />
+    </group>
+
+    <group break-time="0.1">
+      <DefaultEnemy y="0.25" dir="1" />
+    </group>
+
+    <group break-time="2">
+      <DefaultEnemy y="0" dir="1" />
+    </group>
+  </preset>
+
+  <preset name="TripleR">
+    <group break-time="1.2">
+      <DefaultEnemy y="0.42" dir="-1" />
+      <DefaultEnemy y="0.58" dir="-1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0" dir="-1" />
+      <DefaultEnemy y="1" dir="-1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.3132" dir="-1" />
+      <DefaultEnemy y="0.6864" dir="-1" />
+    </group>
+  </preset>
+
+  <preset name="TripleL">
+    <group break-time="1.2">
+      <DefaultEnemy y="0.42" dir="1" />
+      <DefaultEnemy y="0.58" dir="1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0" dir="1" />
+      <DefaultEnemy y="1" dir="1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.3132" dir="1" />
+      <DefaultEnemy y="0.6864" dir="1" />
+    </group>
+  </preset>
+
+  <preset name="WallR">
+    <group break-time="2">
+      <DefaultEnemy y="0.2" dir="-1" />
+      <DefaultEnemy y="0.4" dir="-1" />
+      <DefaultEnemy y="0.6" dir="-1" />
+      <DefaultEnemy y="0.8" dir="-1" />
+    </group>
+  </preset>
+
+  <preset name="WallL">
+    <group break-time="2">
+      <DefaultEnemy y="0.2" dir="1" />
+      <DefaultEnemy y="0.4" dir="1" />
+      <DefaultEnemy y="0.6" dir="1" />
+      <DefaultEnemy y="0.8" dir="1" />
+    </group>
+  </preset>
+
+  <preset name="Mincer">
+    <group break-time="1.2">
+      <DefaultEnemy y="0" dir ="1" />
+      <DefaultEnemy y="1" dir ="-1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.25" dir ="1" />
+      <DefaultEnemy y="0.75" dir ="-1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.5" dir ="1" />
+      <DefaultEnemy y="0.5" dir ="-1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.75" dir ="1" />
+      <DefaultEnemy y="0.25" dir ="-1" />
+    </group>
+    <group break-time="2">
+      <DefaultEnemy y="1" dir ="1" />
+      <DefaultEnemy y="0" dir ="-1" />
+    </group>
+  </preset>
+
+  <preset name="MincerReverse">
+    <group break-time="1.2">
+      <DefaultEnemy y="0" dir ="-1" />
+      <DefaultEnemy y="1" dir ="1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.25" dir ="-1" />
+      <DefaultEnemy y="0.75" dir ="1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.5" dir ="-1" />
+      <DefaultEnemy y="0.5" dir ="1" />
+    </group>
+    <group break-time="1.2">
+      <DefaultEnemy y="0.75" dir ="-1" />
+      <DefaultEnemy y="0.25" dir ="1" />
+    </group>
+    <group break-time="2">
+      <DefaultEnemy y="1" dir ="-1" />
+      <DefaultEnemy y="0" dir ="1" />
+    </group>
+  </preset>
+
+  <preset name="RandomR">
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="-1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="-1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="-1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="-1"/>
+    </group>
+    <group break-time="1.5">
+      <DefaultEnemy y="random" dir="-1"/>
+    </group>
+  </preset>
+
+  <preset name="RandomL">
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="1"/>
+    </group>
+    <group break-time="0.5">
+      <DefaultEnemy y="random" dir="1"/>
+    </group>
+    <group break-time="1.5">
+      <DefaultEnemy y="random" dir="1"/>
+    </group>
+  </preset>
+  
+</presets>

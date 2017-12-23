@@ -141,6 +141,18 @@
     <ClCompile Include="AndroidPlatform.cpp">
       <Filter>Game\Engine\Platforms</Filter>
     </ClCompile>
+    <ClCompile Include="tinystr.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlerror.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlparser.cpp">
+      <Filter>Game\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -260,6 +272,12 @@
     <ClInclude Include="AndroidPlatform.h">
       <Filter>Game\Engine\Platforms</Filter>
     </ClInclude>
+    <ClInclude Include="tinystr.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml.h">
+      <Filter>Game\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="SpawnPresets.txt">
@@ -302,5 +320,8 @@
     <Font Include="GameButtons.ttf">
       <Filter>Файлы ресурсов</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Data\SpawnPresets.xml" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@ class DefaultEnemy :
 	public Enemy
 {
 public:
-	DefaultEnemy(float y, float velocityX);
+	DefaultEnemy(float y, float dirX);
 
 	virtual void update(World&, sf::Time elapsed);
 
