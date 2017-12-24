@@ -6,12 +6,12 @@ class DefaultEnemy :
 {
 public:
 	DefaultEnemy(float y, float dirX);
+	~DefaultEnemy();
 
 	virtual void update(World&, sf::Time elapsed);
 
 	virtual Enemy* clone();
 
-	~DefaultEnemy();
 private:
 	cd::Vector2<float>* m_collisionVertices[5];
 

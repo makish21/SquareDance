@@ -223,6 +223,7 @@
     <ClCompile Include="ToMenuTransition.cpp" />
     <ClCompile Include="ToPauseTransition.cpp" />
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="WallEnemy.cpp" />
     <ClCompile Include="WindowsPlatform.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -266,6 +267,7 @@
     <ClInclude Include="ToMenuTransition.h" />
     <ClInclude Include="ToPauseTransition.h" />
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="WallEnemy.h" />
     <ClInclude Include="WindowsPlatform.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

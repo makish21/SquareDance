@@ -18,6 +18,7 @@ public:
 	virtual Enemy* clone() = 0;
 
 protected:
+	float m_dir;
 	sf::Vector2f m_velocity;
-	sf::CircleShape m_shape;
+	sf::Shape* m_shape;
 };

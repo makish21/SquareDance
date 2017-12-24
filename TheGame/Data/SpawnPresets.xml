@@ -104,19 +104,23 @@
 
   <preset name="WallR">
     <group break-time="2">
-      <DefaultEnemy y="0.2" dir="-1" />
+      <!--DefaultEnemy y="0.2" dir="-1" />
       <DefaultEnemy y="0.4" dir="-1" />
       <DefaultEnemy y="0.6" dir="-1" />
-      <DefaultEnemy y="0.8" dir="-1" />
+      <DefaultEnemy y="0.8" dir="-1" /-->
+    
+      <WallEnemy top="0.2" bottom="0.8" dir="-1" />
     </group>
   </preset>
 
   <preset name="WallL">
     <group break-time="2">
-      <DefaultEnemy y="0.2" dir="1" />
+      <!--DefaultEnemy y="0.2" dir="1" />
       <DefaultEnemy y="0.4" dir="1" />
       <DefaultEnemy y="0.6" dir="1" />
-      <DefaultEnemy y="0.8" dir="1" />
+      <DefaultEnemy y="0.8" dir="1" /-->
+    
+      <WallEnemy top="0.2" bottom="0.8" dir="1" />
     </group>
   </preset>
 

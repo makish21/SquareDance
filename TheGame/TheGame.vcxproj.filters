@@ -153,6 +153,9 @@
     <ClCompile Include="tinyxmlparser.cpp">
       <Filter>Game\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="WallEnemy.cpp">
+      <Filter>Game\Engine\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="tinyxml.h">
       <Filter>Game\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WallEnemy.h">
+      <Filter>Game\Engine\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

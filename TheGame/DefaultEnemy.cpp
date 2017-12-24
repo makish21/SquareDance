@@ -5,15 +5,13 @@
 
 DefaultEnemy::DefaultEnemy(float y, float dirX)
 {
+	m_dir = dirX;
 	m_velocity.y = 0;
-
-	m_shape.setRadius(RADIUS);
+	m_shape = new sf::CircleShape(RADIUS, 5);
+	m_shape->setFillColor(sf::Color(110, 255, 231));
 
 	setOrigin(RADIUS, RADIUS);
 	setArea(RADIUS);
-
-	m_shape.setFillColor(sf::Color(110,255,231));
-	m_shape.setPointCount(5);
 
 	if (dirX > 0)
 	{
@@ -26,7 +24,7 @@ DefaultEnemy::DefaultEnemy(float y, float dirX)
 
 	m_velocity.x = dirX * 0.7f;
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < m_shape->getPointCount(); i++)
 	{
 		m_collisionVertices[i] = new cd::Vector2<float>();
 	}
@@ -48,16 +46,15 @@ void DefaultEnemy::update(World& world, sf::Time elapsed)
 
 Enemy * DefaultEnemy::clone()
 {
-	float dir = (m_velocity.x / std::fabs(m_velocity.x));
-	return new DefaultEnemy(getPosition().y, dir);
+	return new DefaultEnemy(getPosition().y, m_dir);
 }
 
 void DefaultEnemy::updateCollision()
 {
 	setCenter(getPosition());
-	for (size_t i = 0; i < 5; i++)
+	for (size_t i = 0; i < m_shape->getPointCount(); i++)
 	{
-		sf::Vector2f vertex = getTransform().transformPoint(m_shape.getPoint(i));
+		sf::Vector2f vertex = getTransform().transformPoint(m_shape->getPoint(i));
 		*m_collisionVertices[i] = cd::Vector2<float>(vertex.x, vertex.y);
 	}
 }
@@ -83,7 +80,7 @@ bool DefaultEnemy::checkCollisionWithWorld(const World& world)
 
 DefaultEnemy::~DefaultEnemy()
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < m_shape->getPointCount(); i++)
 	{
 		if (m_collisionVertices[i])
 		{

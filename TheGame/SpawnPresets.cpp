@@ -1,6 +1,7 @@
 #include "SpawnPresets.h"
 #include "tinyxml.h"
 #include "Definitions.hpp"
+#include "WallEnemy.h"
 
 SpawnPresets::SpawnPresets()
 {
@@ -58,15 +59,14 @@ void SpawnPresets::loadFromFile(const std::string & fileName)
 
 			for (TiXmlElement* p_enemy = p_group->FirstChildElement(); p_enemy; p_enemy = p_enemy->NextSiblingElement())
 			{
-				std::string enemyName = p_enemy->Value();
-
-				if (enemyName == "DefaultEnemy")
+				std::string enemyType = p_enemy->Value();
+				if (enemyType == "DefaultEnemy")
 				{
 					float y, dir;
 
 					if (std::string(p_enemy->Attribute("y")) == "random")
 					{
-						y = static_cast<float>(std::rand() % 1000) / 1000.f;
+						y = static_cast<float>(std::rand() % 8) / 8.f;
 					}
 					else
 					{
@@ -78,6 +78,19 @@ void SpawnPresets::loadFromFile(const std::string & fileName)
 
 					group.m_enemies.push_back(new DefaultEnemy(y, dir));
 				}
+				else if (enemyType == "WallEnemy")
+				{
+					float top, bottom, dir;
+
+					p_enemy->QueryFloatAttribute("top", &top);
+					p_enemy->QueryFloatAttribute("bottom", &bottom);
+					p_enemy->QueryFloatAttribute("dir", &dir);
+
+					top *= WORLD_SIZE.y;
+					bottom *= WORLD_SIZE.y;
+
+					group.m_enemies.push_back(new WallEnemy(top, bottom, dir));
+				}
 			}
 
 			preset.push_back(group);
@@ -85,8 +98,9 @@ void SpawnPresets::loadFromFile(const std::string & fileName)
 
 		m_presets.push_back(preset);
 	}
-
 	delete[] content;
+	//delete root;
+	doc.Clear();
 }
 
 size_t SpawnPresets::getSize() const
